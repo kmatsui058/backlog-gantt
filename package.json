@@ -12,20 +12,13 @@
     "lint": "npm run lint:js && npm run lint:style",
     "test": "jest"
   },
-  "lint-staged": {
-    "*.{js,vue}": "eslint",
-    "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.2",
+    "@nuxtjs/style-resources": "^1.0.0",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "nuxt-property-decorator": "^2.8.8"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.6",
@@ -45,10 +38,13 @@
     "husky": "^4.3.0",
     "jest": "^26.5.0",
     "lint-staged": "^10.4.0",
+    "node-sass": "^4.14.1",
     "prettier": "^2.1.2",
+    "sass-loader": "^10.0.3",
     "stylelint": "^13.7.2",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.18.0",
     "ts-jest": "^26.4.1",
     "vue-jest": "^3.0.4"
   }
