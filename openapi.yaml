@@ -1,0 +1,122 @@
+openapi: 3.0.2
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: backlog api
+paths:
+  /api/v2/projects:
+    get:
+      summary: プロジェクトの一覧を取得
+      parameters:
+        - in: query
+          name: archived
+          required: false
+          schema:
+            type: string
+            example: "true"
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/ProjectListResponse'
+components:
+  schemas:
+    ProjectListResponse:
+      default: []
+      description: The root schema comprises the entire JSON document.
+      example:
+      -   -   archived: false
+              chartEnabled: false
+              id: 1
+              name: test
+              projectKey: TEST
+              projectLeaderCanEditProjectLeader: false
+              subtaskingEnabled: false
+              textFormattingRule: markdown
+      items:
+          anyOf:
+          -   additionalProperties: true
+              default: {}
+              description: An explanation about the purpose of this instance.
+              example:
+              -   archived: false
+                  chartEnabled: false
+                  id: 1
+                  name: test
+                  projectKey: TEST
+                  projectLeaderCanEditProjectLeader: false
+                  subtaskingEnabled: false
+                  textFormattingRule: markdown
+              properties:
+                  archived:
+                      default: false
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - false
+                      title: The archived schema
+                      type: boolean
+                  chartEnabled:
+                      default: false
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - false
+                      title: The chartEnabled schema
+                      type: boolean
+                  id:
+                      default: 0
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - 1
+                      title: The id schema
+                      type: integer
+                  name:
+                      default: ''
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - test
+                      title: The name schema
+                      type: string
+                  projectKey:
+                      default: ''
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - TEST
+                      title: The projectKey schema
+                      type: string
+                  projectLeaderCanEditProjectLeader:
+                      default: false
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - false
+                      title: The projectLeaderCanEditProjectLeader schema
+                      type: boolean
+                  subtaskingEnabled:
+                      default: false
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - false
+                      title: The subtaskingEnabled schema
+                      type: boolean
+                  textFormattingRule:
+                      default: ''
+                      description: An explanation about the purpose of this instance.
+                      example:
+                      - markdown
+                      title: The textFormattingRule schema
+                      type: string
+              required:
+              - id
+              - projectKey
+              - name
+              - chartEnabled
+              - subtaskingEnabled
+              - projectLeaderCanEditProjectLeader
+              - textFormattingRule
+              - archived
+              title: The first anyOf schema
+              type: object
+      title: The root schema
+      type: array
+
