@@ -9,7 +9,7 @@
     "generate": "nuxt-ts generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
-    "lint": "npm run lint:js && npm run lint:style",
+    "lint": "npm run lint:js -- --fix && npm run lint:style -- --fix",
     "test": "jest",
     "parseAPI": "openapi-generator-cli generate --enable-post-process-file -i ./openapi.yaml -o ./api --generator-name typescript-axios -c ./openapi-config.yaml"
   },
