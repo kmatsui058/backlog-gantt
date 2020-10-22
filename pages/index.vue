@@ -29,9 +29,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
-export default class IndexComponent extends Vue {
-
-}
+export default class IndexComponent extends Vue {}
 </script>
 
 <style lang="scss">
