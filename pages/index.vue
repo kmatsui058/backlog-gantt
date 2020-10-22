@@ -2,6 +2,7 @@
   <div class="index">
     <ArrowDown class="arrow-down" />
     <img :src="arrowLeft" alt="left" />
+    hogehoge
   </div>
 </template>
 
@@ -15,6 +16,9 @@ export default class IndexComponent extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+.index {
+  color: white;
+}
 .arrow-down .c {
   stroke: red;
 }
