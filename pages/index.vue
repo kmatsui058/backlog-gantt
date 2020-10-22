@@ -2,6 +2,7 @@
   <div class="container">
     <ArrowDown class="arrow-down" />
     <img :src="ArrowLeft" alt="arrow-left" />
+    aaaaああああ
   </div>
 </template>
 
