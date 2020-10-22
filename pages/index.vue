@@ -1,20 +1,16 @@
 <template>
   <div class="container">
-    <ArrowDown class="arrow-down" />
-    <img :src="ArrowLeft" alt="arrow-left" />
+    <ControllerBox title="hoge"> hogegege </ControllerBox>
     aaaaああああ
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import ArrowDown from '@/assets/images/icons/arrow-down.svg?inline'
-import ArrowLeft from '@/assets/images/icons/arrow-left.svg'
+import ControllerBox from '@/components/common/ControllerBox.vue'
 
-@Component({ components: { ArrowDown } })
-export default class IndexComponent extends Vue {
-  ArrowLeft = ArrowLeft
-}
+@Component({ components: { ControllerBox } })
+export default class IndexComponent extends Vue {}
 </script>
 
 <style lang="scss">
