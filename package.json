@@ -11,7 +11,7 @@
     "lint:style": "stylelint **/*.{vue,css}",
     "lint": "npm run lint:js -- --fix && npm run lint:style -- --fix",
     "test": "jest",
-    "parseAPI": "openapi-generator-cli generate --enable-post-process-file -i ./openapi.yaml -o ./api --generator-name typescript-axios -c ./openapi-config.yaml"
+    "parseAPI": "openapi-generator-cli generate --enable-post-process-file -i ./openapi.yaml -t ./template -o ./api --generator-name typescript-axios -c ./openapi-config.yaml"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
