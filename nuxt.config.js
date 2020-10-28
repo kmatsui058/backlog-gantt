@@ -12,6 +12,10 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
+  env: {
+    CLIENT_ID: process.env.CLIENT_ID,
+    CLIENT_SECRET: process.env.CLIENT_SECRET
+  },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: ['@/assets/scss/common.scss'],
