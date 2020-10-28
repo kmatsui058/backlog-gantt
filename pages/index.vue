@@ -31,9 +31,10 @@ export default class IndexComponent extends Vue {
     authStore.doOAuth()
   }
 
-  created(): void {
+  async created(): Promise<void> {
     if (this.code) {
       authStore.setCode(this.code)
+      await authStore.fetchToken()
     }
   }
 }

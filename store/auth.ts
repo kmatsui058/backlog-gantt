@@ -1,4 +1,6 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
+import { AxiosError } from 'axios'
+import { $api, Oauth2TokenRequestGrantTypeEnum } from '~/utils/api'
 @Module({
   name: 'auth',
   stateFactory: true,
@@ -26,9 +28,27 @@ export default class AuthModule extends VuexModule {
   }
 
   @Action
+  async fetchToken(): Promise<void> {
+    if (!this.code || !this.clientId || !this.clientSecret)
+      throw new Error('no require data')
+    const res = await $api
+      .apiV2Oauth2TokenPost(
+        Oauth2TokenRequestGrantTypeEnum.AuthorizationCode,
+        this.code,
+        this.clientId,
+        this.clientSecret
+      )
+      .catch((err: AxiosError) => {
+        if (err.response && err.response.status === 400) {
+          this.doOAuth()
+        }
+      })
+  }
+
+  @Action
   doOAuth(): void {
     if (!this.getBacklogDomain) throw new Error('no domain data')
     if (!this.clientId) throw new Error('no client id')
-    location.href = `https://ediplex.backlog.jp/OAuth2AccessRequest.action?response_type=code&client_id=${this.clientId}`
+    location.href = `${this.getBacklogDomain}/OAuth2AccessRequest.action?response_type=code&client_id=${this.clientId}`
   }
 }

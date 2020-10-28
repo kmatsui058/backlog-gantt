@@ -46,9 +46,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              oneOf:
-                - $ref: "#/components/schemas/Oauth2TokenRequest"
-                - $ref: "#/components/schemas/Oauth2TokenRefleshRequest"
+              $ref: "#/components/schemas/Oauth2TokenCodeRequest"
       responses:
         "200":
           description: 成功
@@ -192,7 +190,10 @@ components:
       title: The root schema
       type: array
 
-    Oauth2TokenRequest:
+
+
+
+    Oauth2TokenCodeRequest:
       type: object
       properties:
         grant_type:
@@ -237,3 +238,29 @@ components:
           - refresh_token
           - client_id
           - client_secret
+
+    Oauth2TokenRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          enum:
+            - authorization_code
+            - refresh_token
+          example: authorization_code
+        code:
+          type: string
+          description: 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+        redirect_uri:
+          type: string
+          description: 認可エンドポイントで指定した場合は必須
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      required:
+          - grant_type
+          - code
+          - client_id
+          - client_secret
+
