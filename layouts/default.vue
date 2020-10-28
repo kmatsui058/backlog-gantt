@@ -1,31 +1,26 @@
 <template>
-  <div class="container">
+  <div class="default">
     <header></header>
-    <main>
-      <Nuxt />
-    </main>
-    <footer></footer>
+    <main><Nuxt /></main>
   </div>
 </template>
 <style lang="scss" scoped>
-.container {
-  position: relative;
+.default {
   background-color: #f1f3f9;
-  min-height: 100vh;
+  position: relative;
   &::before {
     content: '';
     display: block;
     position: absolute;
-    background-color: $c-navy;
     top: 0;
-    right: 0;
     left: 0;
+    right: 0;
     height: 378px;
+    background-color: $c-navy;
   }
 }
-main,
 header,
-footer {
+main {
   position: relative;
 }
 </style>
