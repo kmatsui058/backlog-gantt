@@ -47,16 +47,19 @@ export default {
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extend: (config) => {
-      const svgRule = config.module.rules.find((rule) => rule.test.test('.svg'))
+      const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
 
-      svgRule.test = /\.(png|jpe?g|gif|webp)$/
+      svgRule.test = /\.(png|jpe?g|gif|webp)$/;
 
       config.module.rules.push({
         test: /\.svg$/,
         oneOf: [
           {
             resourceQuery: /inline/,
-            use: ['babel-loader', 'vue-svg-loader'],
+            use: [
+              'babel-loader',
+              'vue-svg-loader',
+            ],
           },
           {
             loader: 'file-loader',
@@ -65,7 +68,7 @@ export default {
             },
           },
         ],
-      })
+      });
     },
   },
 }

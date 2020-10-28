@@ -1,25 +1,22 @@
 <template>
-  <div class="index">
-    <ArrowDown class="arrow-down" />
-    <img :src="arrowLeft" alt="left" />
-    hogehoge
+  <div class="container">
+    <ControllerBox title="hoge"> hogegege </ControllerBox>
+    aaaaああああ
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import ArrowDown from '@/assets/iamges/icons/arrow-down.svg?inline'
-import arrowLeft from '@/assets/iamges/icons/arrow-left.svg'
-@Component({ components: { ArrowDown } })
-export default class IndexComponent extends Vue {
-  arrowLeft = arrowLeft
-}
+import ControllerBox from '@/components/common/ControllerBox.vue'
+
+@Component({ components: { ControllerBox } })
+export default class IndexComponent extends Vue {}
 </script>
-<style lang="scss" scoped>
-.index {
-  color: white;
-}
-.arrow-down .c {
-  stroke: red;
+
+<style lang="scss">
+.arrow-down {
+  .c {
+    stroke: red;
+  }
 }
 </style>
