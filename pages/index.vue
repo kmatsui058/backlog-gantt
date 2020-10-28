@@ -1,20 +1,40 @@
 <template>
   <div class="container">
-    <ControllerBox title="hoge">
-      {{ clientId }}
-    </ControllerBox>
+    <input v-model="domain" type="text" />
+    <button @click="doLogin">login</button>
+    <ControllerBox title="hoge"> </ControllerBox>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import ControllerBox from '@/components/common/ControllerBox.vue'
-
+import { authStore } from '@/store'
 @Component({ components: { ControllerBox } })
 export default class IndexComponent extends Vue {
-  clientId = process.env.CLIENT_ID
+  get domain(): string {
+    return authStore.getBacklogDomain
+  }
+
+  set domain(value: string) {
+    authStore.setBacklogDomain(value)
+  }
+
+  get code(): string | undefined {
+    const code = this.$route.query.code
+    if (typeof code === 'string') {
+      return code
+    }
+  }
+
+  doLogin(): void {
+    authStore.doOAuth()
+  }
+
   created(): void {
-    console.log(this.clientId)
+    if (this.code) {
+      authStore.setCode(this.code)
+    }
   }
 }
 </script>
