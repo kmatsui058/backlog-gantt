@@ -1,9 +1,8 @@
 <template>
   <div class="container">
     <ControllerBox title="hoge">
-      hogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegegehogegege
+      {{ clientId }}
     </ControllerBox>
-    aaaaああああ
   </div>
 </template>
 
@@ -13,8 +12,9 @@ import ControllerBox from '@/components/common/ControllerBox.vue'
 
 @Component({ components: { ControllerBox } })
 export default class IndexComponent extends Vue {
+  clientId = process.env.CLIENT_ID
   created() {
-    console.log(process.env.CLIENT_ID)
+    console.log(this.clientId)
   }
 }
 </script>
