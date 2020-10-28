@@ -16,6 +16,7 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.2",
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/style-resources": "^1.0.0",
     "@openapitools/openapi-generator-cli": "^2.0.3",
     "core-js": "^3.6.5",
