@@ -4,6 +4,75 @@ info:
   version: "1.0.0"
   title: backlog api
 paths:
+  /OAuth2AccessRequest.action :
+    get:
+      summary: 認可リクエスト
+      parameters:
+        - in: query
+          name: response_type
+          required: true
+          schema:
+            type: string
+            example: "code"
+            enum:
+              - "code"
+        - in: query
+          name: client_id
+          required: true
+          schema:
+            type: string
+            example: "fvdfbsfgbsdf"
+        - in: query
+          name: redirect_uri
+          required: false
+          schema:
+            type: string
+            example: "https://backlog-gantt-develop.netlify.app/"
+        - in: query
+          name: state
+          required: false
+          schema:
+            type: string
+            example: "code"
+      responses:
+        "200":
+          description: 成功
+
+  /api/v2/oauth2/token:
+    post:
+      summary: アクセストークンリクエスト
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/Oauth2TokenRequest"
+                - $ref: "#/components/schemas/Oauth2TokenRefleshRequest"
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                title: Oauth2TokenRequestResponse
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "YOUR_ACCESS_TOKEN"
+                  token_type:
+                    type: string
+                    example: Bearer
+                  expires_in:
+                    type: number
+                    example: 3600
+                  refresh_token:
+                    type: string
+                    example: YOUR_REFRESH_TOKEN
+
+
+
   /api/v2/projects:
     get:
       summary: プロジェクトの一覧を取得
@@ -21,6 +90,9 @@ paths:
             application/json:
               schema:
                 $ref : '#/components/schemas/ProjectListResponse'
+
+
+
 components:
   schemas:
     ProjectListResponse:
@@ -120,3 +192,48 @@ components:
       title: The root schema
       type: array
 
+    Oauth2TokenRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          enum:
+            - authorization_code
+          example: authorization_code
+          description: 値は”authorization_code”で固定
+        code:
+          type: string
+          description: 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+        redirect_uri:
+          type: string
+          description: 認可エンドポイントで指定した場合は必須
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      required:
+          - grant_type
+          - code
+          - client_id
+          - client_secret
+
+    Oauth2TokenRefleshRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          enum:
+            - refresh_token
+          example: refresh_token
+          description: 値は”refresh_token”で固定
+        refresh_token :
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      required:
+          - grant_type
+          - refresh_token
+          - client_id
+          - client_secret

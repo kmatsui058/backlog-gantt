@@ -13,5 +13,7 @@ module.exports = {
   ],
   plugins: ['prettier'],
   // add your custom rules here
-  rules: {},
+  rules: {
+    '@typescript-eslint/explicit-function-return-type': ['error'],
+  },
 }

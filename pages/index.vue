@@ -13,7 +13,7 @@ import ControllerBox from '@/components/common/ControllerBox.vue'
 @Component({ components: { ControllerBox } })
 export default class IndexComponent extends Vue {
   clientId = process.env.CLIENT_ID
-  created() {
+  created(): void {
     console.log(this.clientId)
   }
 }
