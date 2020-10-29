@@ -1,6 +1,12 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { AxiosError } from 'axios'
-import { $api, Oauth2TokenRequestGrantTypeEnum } from '~/utils/api'
+import {
+  $api,
+  configuration,
+  Oauth2TokenRequestGrantTypeEnum,
+  Oauth2TokenRequestResponse,
+  UserData,
+} from '~/utils/api'
 @Module({
   name: 'auth',
   stateFactory: true,
@@ -8,23 +14,46 @@ import { $api, Oauth2TokenRequestGrantTypeEnum } from '~/utils/api'
   preserveState: true,
 })
 export default class AuthModule extends VuexModule {
-  private backlogDomain = 'https://ediplex.backlog.jp'
+  private backlogDomain = ''
   private readonly clientId = process.env.CLIENT_ID
   private readonly clientSecret = process.env.CLIENT_SECRET
   private code: string | null = null
-
+  private accessToken: string | null = null
+  private refleshToken: string | null = null
+  private self: UserData | null = null
   get getBacklogDomain(): string {
     return this.backlogDomain
+  }
+
+  get getAccessToken(): string | null {
+    return this.accessToken
+  }
+
+  get getSelf(): UserData | null {
+    return this.self
   }
 
   @Mutation
   setBacklogDomain(value: string): void {
     this.backlogDomain = value
+    configuration.basePath = this.backlogDomain
   }
 
   @Mutation
   setCode(value: string): void {
     this.code = value
+  }
+
+  @Mutation
+  setToken(value: Oauth2TokenRequestResponse): void {
+    this.accessToken = value.access_token || null
+    this.refleshToken = value.refresh_token || null
+    configuration.baseOptions.Authorization = `Bearer ${this.accessToken}`
+  }
+
+  @Mutation
+  setSelf(value: UserData | null): void {
+    this.self = value
   }
 
   @Action
@@ -39,10 +68,25 @@ export default class AuthModule extends VuexModule {
         this.clientSecret
       )
       .catch((err: AxiosError) => {
+        console.log(err.config)
         if (err.response && err.response.status === 400) {
           this.doOAuth()
         }
+        throw err
       })
+    if (!res) return
+    this.setToken(res.data)
+    await this.fetchSelf()
+  }
+
+  @Action
+  async fetchSelf(): Promise<void> {
+    if (!this.accessToken) {
+      throw new Error('no access token')
+    }
+    const res = await $api.apiV2UsersMyselfGet()
+    if (!res) return
+    this.setSelf(res.data)
   }
 
   @Action

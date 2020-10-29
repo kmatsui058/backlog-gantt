@@ -69,7 +69,16 @@ paths:
                     type: string
                     example: YOUR_REFRESH_TOKEN
 
-
+  /api/v2/users/myself:
+    get:
+      summary: 認証ユーザー情報の取得
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/UserData'
 
   /api/v2/projects:
     get:
@@ -263,4 +272,60 @@ components:
           - code
           - client_id
           - client_secret
-
+    UserData:
+      additionalProperties: true
+      default: {}
+      description: The root schema comprises the entire JSON document.
+      example:
+          id: 1
+          lang: ja
+          mailAddress: eguchi@nulab.example
+          name: admin
+          roleType: 1
+          userId: admin
+      properties:
+          id:
+              default: 0
+              description: An explanation about the purpose of this instance.
+              example: 1
+              title: The id schema
+              type: integer
+          lang:
+              default: ''
+              description: An explanation about the purpose of this instance.
+              example: ja
+              title: The lang schema
+              type: string
+          mailAddress:
+              default: ''
+              description: An explanation about the purpose of this instance.
+              example: eguchi@nulab.example
+              title: The mailAddress schema
+              type: string
+          name:
+              default: ''
+              description: An explanation about the purpose of this instance.
+              example: admin
+              title: The name schema
+              type: string
+          roleType:
+              default: 0
+              description: An explanation about the purpose of this instance.
+              example: 1
+              title: The roleType schema
+              type: integer
+          userId:
+              default: ''
+              description: An explanation about the purpose of this instance.
+              example: admin
+              title: The userId schema
+              type: string
+      required:
+      - id
+      - userId
+      - name
+      - roleType
+      - lang
+      - mailAddress
+      title: The root schema
+      type: object

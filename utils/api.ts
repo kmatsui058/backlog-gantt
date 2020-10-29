@@ -5,11 +5,15 @@ let $api: DefaultApi
 // eslint-disable-next-line import/no-mutable-exports
 export const configuration: Configuration = {
   baseOptions: {
-    Headers: { 'Access-Control-Allow-Origin': '*' },
+    headers: { 'Access-Control-Allow-Origin': '*' },
   },
 }
 export function initializeApi(): void {
-  $api = new DefaultApi(configuration, authStore.getBacklogDomain)
+  if (authStore.getAccessToken) {
+    configuration.baseOptions.Authorization = `Bearer ${authStore.getAccessToken}`
+  }
+  configuration.basePath = authStore.getBacklogDomain
+  $api = new DefaultApi(configuration)
 }
 
 export { $api }
