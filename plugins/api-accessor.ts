@@ -1,28 +1,31 @@
 import { Plugin } from '@nuxt/types'
-import { DefaultApi } from '@/api'
-import { $api, initializeApi } from '~/utils/api'
-
+import { Configuration } from '@/api'
+import { authStore } from '~/store'
 declare module 'vue/types/vue' {
   interface Vue {
-    $api: DefaultApi
+    $apiConfig: Configuration
   }
 }
 
 declare module '@nuxt/types' {
   interface NuxtAppOptions {
-    $api: DefaultApi
+    $apiConfig: Configuration
   }
 }
 
 declare module 'vuex/types/index' {
   interface Store<S> {
-    $api: DefaultApi
+    $apiConfig: Configuration
   }
 }
+export const $apiConfig: Configuration = { baseOptions: {} }
 
 const accessor: Plugin = (_, inject) => {
-  initializeApi()
-  inject('api', $api)
+  if (authStore.getAccessToken) {
+    $apiConfig.baseOptions.Authorization = `Bearer ${authStore.getAccessToken}`
+  }
+  $apiConfig.basePath = authStore.getBacklogDomain
+  inject('apiConfig', $apiConfig)
 }
 
 export default accessor

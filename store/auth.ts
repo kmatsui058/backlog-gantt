@@ -1,12 +1,13 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import { AxiosError } from 'axios'
+import { $apiConfig } from '@/plugins/api-accessor'
 import {
-  $api,
-  configuration,
+  DefaultApi,
   Oauth2TokenRequestGrantTypeEnum,
   Oauth2TokenRequestResponse,
   UserData,
-} from '~/utils/api'
+} from '~/api'
+
 @Module({
   name: 'auth',
   stateFactory: true,
@@ -36,7 +37,7 @@ export default class AuthModule extends VuexModule {
   @Mutation
   setBacklogDomain(value: string): void {
     this.backlogDomain = value
-    configuration.basePath = this.backlogDomain
+    $apiConfig.basePath = this.backlogDomain
   }
 
   @Mutation
@@ -48,7 +49,7 @@ export default class AuthModule extends VuexModule {
   setToken(value: Oauth2TokenRequestResponse): void {
     this.accessToken = value.access_token || null
     this.refleshToken = value.refresh_token || null
-    configuration.baseOptions.Authorization = `Bearer ${this.accessToken}`
+    if (this.accessToken) $apiConfig.accessToken = this.accessToken
   }
 
   @Mutation
@@ -60,7 +61,8 @@ export default class AuthModule extends VuexModule {
   async fetchToken(): Promise<void> {
     if (!this.code || !this.clientId || !this.clientSecret)
       throw new Error('no require data')
-    const res = await $api
+    console.log({ $apiConfig })
+    const res = await new DefaultApi($apiConfig)
       .apiV2Oauth2TokenPost(
         Oauth2TokenRequestGrantTypeEnum.AuthorizationCode,
         this.code,
@@ -68,7 +70,6 @@ export default class AuthModule extends VuexModule {
         this.clientSecret
       )
       .catch((err: AxiosError) => {
-        console.log(err.config)
         if (err.response && err.response.status === 400) {
           this.doOAuth()
         }
@@ -84,7 +85,15 @@ export default class AuthModule extends VuexModule {
     if (!this.accessToken) {
       throw new Error('no access token')
     }
-    const res = await $api.apiV2UsersMyselfGet()
+    console.log({ $apiConfig })
+    const res = await new DefaultApi($apiConfig)
+      .apiV2UsersMyselfGet()
+      .catch((err: AxiosError) => {
+        if (err.response && err.response.status === 400) {
+          this.fetchToken()
+        }
+        throw err
+      })
     if (!res) return
     this.setSelf(res.data)
   }
