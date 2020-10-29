@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import { AxiosError } from 'axios'
+import Axios, { AxiosError } from 'axios'
 import { $apiConfig } from '@/plugins/api-accessor'
 import {
   DefaultApi,
@@ -20,7 +20,7 @@ export default class AuthModule extends VuexModule {
   private readonly clientSecret = process.env.CLIENT_SECRET
   private code: string | null = null
   private accessToken: string | null = null
-  private refleshToken: string | null = null
+  private refreshToken: string | null = null
   private self: UserData | null = null
   get getBacklogDomain(): string {
     return this.backlogDomain
@@ -46,9 +46,14 @@ export default class AuthModule extends VuexModule {
   }
 
   @Mutation
-  setToken(value: Oauth2TokenRequestResponse): void {
-    this.accessToken = value.access_token || null
-    this.refleshToken = value.refresh_token || null
+  setToken(value: Oauth2TokenRequestResponse | null): void {
+    if (value) {
+      this.accessToken = value.access_token || null
+      this.refreshToken = value.refresh_token || null
+    } else {
+      this.accessToken = null
+    }
+
     if (this.accessToken) $apiConfig.accessToken = this.accessToken
   }
 
@@ -65,15 +70,43 @@ export default class AuthModule extends VuexModule {
     const res = await new DefaultApi($apiConfig)
       .apiV2Oauth2TokenPost(
         Oauth2TokenRequestGrantTypeEnum.AuthorizationCode,
-        this.code,
         this.clientId,
-        this.clientSecret
+        this.clientSecret,
+        this.code
       )
       .catch((err: AxiosError) => {
         if (err.response && err.response.status === 400) {
           this.doOAuth()
+        } else {
+          throw err
         }
-        throw err
+      })
+    if (!res) return
+    this.setToken(res.data)
+    await this.fetchSelf()
+  }
+
+  @Action
+  async refresh(): Promise<void> {
+    if (!this.clientId || !this.clientSecret || !this.refreshToken)
+      throw new Error('no require data@refresh')
+    console.log({ $apiConfig })
+    this.setToken(null)
+    const res = await new DefaultApi($apiConfig)
+      .apiV2Oauth2TokenPost(
+        Oauth2TokenRequestGrantTypeEnum.RefreshToken,
+        this.clientId,
+        this.clientSecret,
+        undefined,
+        undefined,
+        this.refreshToken
+      )
+      .catch(async (err: AxiosError) => {
+        if (err.response && err.response.status === 400) {
+          await this.doOAuth()
+        } else {
+          throw err
+        }
       })
     if (!res) return
     this.setToken(res.data)
@@ -88,11 +121,14 @@ export default class AuthModule extends VuexModule {
     console.log({ $apiConfig })
     const res = await new DefaultApi($apiConfig)
       .apiV2UsersMyselfGet()
-      .catch((err: AxiosError) => {
-        if (err.response && err.response.status === 400) {
-          this.fetchToken()
+      .catch(async (err: AxiosError) => {
+        console.log(err.response)
+        if (err.response && err.response.status === 401) {
+          await this.refresh()
+          return Axios.request(err.config)
+        } else {
+          throw err
         }
-        throw err
       })
     if (!res) return
     this.setSelf(res.data)

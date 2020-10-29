@@ -118,18 +118,6 @@ export interface Oauth2TokenRequest {
      */
     grant_type: Oauth2TokenRequestGrantTypeEnum;
     /**
-     * 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
-     * @type {string}
-     * @memberof Oauth2TokenRequest
-     */
-    code: string;
-    /**
-     * 認可エンドポイントで指定した場合は必須
-     * @type {string}
-     * @memberof Oauth2TokenRequest
-     */
-    redirect_uri?: string;
-    /**
      * 
      * @type {string}
      * @memberof Oauth2TokenRequest
@@ -141,6 +129,24 @@ export interface Oauth2TokenRequest {
      * @memberof Oauth2TokenRequest
      */
     client_secret: string;
+    /**
+     * 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+     * @type {string}
+     * @memberof Oauth2TokenRequest
+     */
+    code?: string;
+    /**
+     * 認可エンドポイントで指定した場合は必須
+     * @type {string}
+     * @memberof Oauth2TokenRequest
+     */
+    redirect_uri?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Oauth2TokenRequest
+     */
+    refresh_token?: string;
 }
 
 /**
@@ -238,22 +244,19 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary アクセストークンリクエスト
-         * @param {string} grantType 値は”authorization_code”で固定
-         * @param {string} code 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+         * @param {string} grantType 
          * @param {string} clientId 
          * @param {string} clientSecret 
+         * @param {string} [code] 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
          * @param {string} [redirectUri] 認可エンドポイントで指定した場合は必須
+         * @param {string} [refreshToken] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2Oauth2TokenPost: async (grantType: string, code: string, clientId: string, clientSecret: string, redirectUri?: string, options: any = {}): Promise<RequestArgs> => {
+        apiV2Oauth2TokenPost: async (grantType: string, clientId: string, clientSecret: string, code?: string, redirectUri?: string, refreshToken?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'grantType' is not null or undefined
             if (grantType === null || grantType === undefined) {
                 throw new RequiredError('grantType','Required parameter grantType was null or undefined when calling apiV2Oauth2TokenPost.');
-            }
-            // verify required parameter 'code' is not null or undefined
-            if (code === null || code === undefined) {
-                throw new RequiredError('code','Required parameter code was null or undefined when calling apiV2Oauth2TokenPost.');
             }
             // verify required parameter 'clientId' is not null or undefined
             if (clientId === null || clientId === undefined) {
@@ -289,6 +292,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 localVarFormParams.set('grant_type', grantType as any);
             }
     
+            if (clientId !== undefined) { 
+                localVarFormParams.set('client_id', clientId as any);
+            }
+    
+            if (clientSecret !== undefined) { 
+                localVarFormParams.set('client_secret', clientSecret as any);
+            }
+    
             if (code !== undefined) { 
                 localVarFormParams.set('code', code as any);
             }
@@ -297,12 +308,8 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 localVarFormParams.set('redirect_uri', redirectUri as any);
             }
     
-            if (clientId !== undefined) { 
-                localVarFormParams.set('client_id', clientId as any);
-            }
-    
-            if (clientSecret !== undefined) { 
-                localVarFormParams.set('client_secret', clientSecret as any);
+            if (refreshToken !== undefined) { 
+                localVarFormParams.set('refresh_token', refreshToken as any);
             }
     
     
@@ -505,16 +512,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary アクセストークンリクエスト
-         * @param {string} grantType 値は”authorization_code”で固定
-         * @param {string} code 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+         * @param {string} grantType 
          * @param {string} clientId 
          * @param {string} clientSecret 
+         * @param {string} [code] 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
          * @param {string} [redirectUri] 認可エンドポイントで指定した場合は必須
+         * @param {string} [refreshToken] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV2Oauth2TokenPost(grantType: string, code: string, clientId: string, clientSecret: string, redirectUri?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Oauth2TokenRequestResponse>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiV2Oauth2TokenPost(grantType, code, clientId, clientSecret, redirectUri, options);
+        async apiV2Oauth2TokenPost(grantType: string, clientId: string, clientSecret: string, code?: string, redirectUri?: string, refreshToken?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Oauth2TokenRequestResponse>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiV2Oauth2TokenPost(grantType, clientId, clientSecret, code, redirectUri, refreshToken, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -576,16 +584,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary アクセストークンリクエスト
-         * @param {string} grantType 値は”authorization_code”で固定
-         * @param {string} code 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+         * @param {string} grantType 
          * @param {string} clientId 
          * @param {string} clientSecret 
+         * @param {string} [code] 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
          * @param {string} [redirectUri] 認可エンドポイントで指定した場合は必須
+         * @param {string} [refreshToken] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV2Oauth2TokenPost(grantType: string, code: string, clientId: string, clientSecret: string, redirectUri?: string, options?: any): AxiosPromise<Oauth2TokenRequestResponse> {
-            return DefaultApiFp(configuration).apiV2Oauth2TokenPost(grantType, code, clientId, clientSecret, redirectUri, options).then((request) => request(axios, basePath));
+        apiV2Oauth2TokenPost(grantType: string, clientId: string, clientSecret: string, code?: string, redirectUri?: string, refreshToken?: string, options?: any): AxiosPromise<Oauth2TokenRequestResponse> {
+            return DefaultApiFp(configuration).apiV2Oauth2TokenPost(grantType, clientId, clientSecret, code, redirectUri, refreshToken, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -632,17 +641,18 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary アクセストークンリクエスト
-     * @param {string} grantType 値は”authorization_code”で固定
-     * @param {string} code 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
+     * @param {string} grantType 
      * @param {string} clientId 
      * @param {string} clientSecret 
+     * @param {string} [code] 認可エンドポイントのリダイレクトから取得した認可コード 開発アプリケーション ページで設定したものと同じUri
      * @param {string} [redirectUri] 認可エンドポイントで指定した場合は必須
+     * @param {string} [refreshToken] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public apiV2Oauth2TokenPost(grantType: string, code: string, clientId: string, clientSecret: string, redirectUri?: string, options?: any) {
-        return DefaultApiFp(this.configuration).apiV2Oauth2TokenPost(grantType, code, clientId, clientSecret, redirectUri, options).then((request) => request(this.axios, this.basePath));
+    public apiV2Oauth2TokenPost(grantType: string, clientId: string, clientSecret: string, code?: string, redirectUri?: string, refreshToken?: string, options?: any) {
+        return DefaultApiFp(this.configuration).apiV2Oauth2TokenPost(grantType, clientId, clientSecret, code, redirectUri, refreshToken, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
