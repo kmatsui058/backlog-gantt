@@ -15,7 +15,7 @@ const initializer: Plugin = async ({ route, app }) => {
     if (code) {
       authStore.setCode(code)
       await authStore.fetchToken()
-      app.$router.push({ query: { code: undefined } })
+      if (app.$router) app.$router.push({ query: { code: undefined } })
     }
   }
 }
