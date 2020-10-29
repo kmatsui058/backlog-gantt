@@ -1,15 +1,14 @@
 import { Plugin } from '@nuxt/types'
+import { $apiConfig } from '@/plugins/api-accessor'
 import { authStore } from '~/store'
-import { configuration } from '~/utils/api'
 
 const initializer: Plugin = async ({ route, app }) => {
   if (!authStore.getBacklogDomain) return
   console.log(authStore.getBacklogDomain)
-  configuration.basePath = authStore.getBacklogDomain
+  $apiConfig.basePath = authStore.getBacklogDomain
 
   if (authStore.getAccessToken) {
-    configuration.baseOptions.Authorization = `Bearer ${authStore.getAccessToken}`
-    console.log({ configuration })
+    $apiConfig.accessToken = authStore.getAccessToken
     await authStore.fetchSelf()
   } else {
     const code = typeof route.query.code === 'string' ? route.query.code : null

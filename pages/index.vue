@@ -2,6 +2,7 @@
   <div class="container">
     <input v-model="domain" type="text" />
     <button @click="doLogin">login</button>
+    <button @click="dofetch">fetch</button>
     <ControllerBox title="hoge"> {{ self }}</ControllerBox>
   </div>
 </template>
@@ -30,6 +31,15 @@ export default class IndexComponent extends Vue {
     if (typeof code === 'string') {
       return code
     }
+  }
+
+  dofetch(): void {
+    if (!this.code) {
+      alert('no code')
+      return
+    }
+    authStore.setCode(this.code)
+    authStore.fetchToken()
   }
 
   doLogin(): void {
