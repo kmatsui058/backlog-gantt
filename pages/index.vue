@@ -47,6 +47,9 @@ export default class IndexComponent extends Vue {
   }
 
   async created(): Promise<void> {}
+  mounted(): void {
+    this.$router.push({ query: { code: undefined } })
+  }
 }
 </script>
 
