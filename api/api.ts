@@ -183,6 +183,51 @@ export interface Oauth2TokenRequestResponse {
      */
     refresh_token?: string;
 }
+/**
+ * The root schema comprises the entire JSON document.
+ * @export
+ * @interface UserData
+ */
+export interface UserData {
+    [key: string]: object | any;
+
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof UserData
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof UserData
+     */
+    lang: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof UserData
+     */
+    mailAddress: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof UserData
+     */
+    name: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof UserData
+     */
+    roleType: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof UserData
+     */
+    userId: string;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -314,6 +359,42 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 認証ユーザー情報の取得
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV2UsersMyselfGet: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/users/myself`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 認可リクエスト
          * @param {'code'} responseType 
          * @param {string} clientId 
@@ -419,6 +500,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 認証ユーザー情報の取得
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV2UsersMyselfGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserData>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiV2UsersMyselfGet(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary 認可リクエスト
          * @param {'code'} responseType 
          * @param {string} clientId 
@@ -469,6 +563,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary 認証ユーザー情報の取得
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV2UsersMyselfGet(options?: any): AxiosPromise<UserData> {
+            return DefaultApiFp(configuration).apiV2UsersMyselfGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 認可リクエスト
          * @param {'code'} responseType 
          * @param {string} clientId 
@@ -516,6 +619,17 @@ export class DefaultApi extends BaseAPI {
      */
     public apiV2ProjectsGet(archived?: string, options?: any) {
         return DefaultApiFp(this.configuration).apiV2ProjectsGet(archived, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 認証ユーザー情報の取得
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public apiV2UsersMyselfGet(options?: any) {
+        return DefaultApiFp(this.configuration).apiV2UsersMyselfGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -2,7 +2,7 @@
   <div class="container">
     <input v-model="domain" type="text" />
     <button @click="doLogin">login</button>
-    <ControllerBox title="hoge"> </ControllerBox>
+    <ControllerBox title="hoge"> {{ self }}</ControllerBox>
   </div>
 </template>
 
@@ -10,10 +10,15 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import ControllerBox from '@/components/common/ControllerBox.vue'
 import { authStore } from '@/store'
+import { UserData } from '~/api'
 @Component({ components: { ControllerBox } })
 export default class IndexComponent extends Vue {
   get domain(): string {
     return authStore.getBacklogDomain
+  }
+
+  get self(): UserData | null {
+    return authStore.getSelf
   }
 
   set domain(value: string) {
@@ -31,12 +36,7 @@ export default class IndexComponent extends Vue {
     authStore.doOAuth()
   }
 
-  async created(): Promise<void> {
-    if (this.code) {
-      authStore.setCode(this.code)
-      await authStore.fetchToken()
-    }
-  }
+  async created(): Promise<void> {}
 }
 </script>
 
