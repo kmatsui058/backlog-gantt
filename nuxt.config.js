@@ -25,6 +25,7 @@ export default {
     { src: '~/plugins/vuex-persist', ssr: false },
     '@/plugins/api-accessor.ts',
     { src: '~/plugins/initializer', ssr: false },
+    '@/plugins/v-tooltip.ts',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -40,7 +41,7 @@ export default {
   ],
   styleResources: {
     // your settings here
-    scss: ['@/assets/scss/variables.scss'],
+    scss: ['@/assets/scss/variables.scss', '@/assets/scss/mixin.scss'],
   },
 
   // Modules (https://go.nuxtjs.dev/config-modules)
