@@ -3,13 +3,25 @@
     <h1 class="title">{{ title }}</h1>
     <div class="right">
       <div class="help"></div>
-      <div v-if="userName" class="user">
-        <div class="user__image">
-          <img v-if="userImage" :src="userImage" alt="" />
-        </div>
-        <div class="user__name">{{ userName }}</div>
-      </div>
-      <button v-else class="login">Login</button>
+      <client-only>
+        <div v-if="initLoading" class="loading">-</div>
+        <v-popover v-else-if="userName">
+          <button class="user">
+            <div class="user__image">
+              <img v-if="userImage" :src="userImage" alt="" />
+            </div>
+            <div class="user__name">{{ userName }}</div>
+          </button>
+          <button slot="popover" class="popup" @click="doLogout">Logout</button>
+        </v-popover>
+        <v-popover v-else>
+          <button class="login">Login</button>
+          <form slot="popover" class="login__form" @submit.prevent="login">
+            <input v-model="domain" type="text" />
+            <button @click="doLogin">login</button>
+          </form>
+        </v-popover>
+      </client-only>
     </div>
   </div>
 </template>
@@ -30,6 +42,26 @@ export default class DefaultHeader extends Vue {
 
   get userName(): string | null {
     return authStore.getSelf ? authStore.getSelf.name : null
+  }
+
+  get initLoading(): boolean {
+    return authStore.getLoading
+  }
+
+  get domain(): string {
+    return authStore.getBacklogDomain
+  }
+
+  set domain(value: string) {
+    authStore.setBacklogDomain(value)
+  }
+
+  doLogout(): void {
+    authStore.logout()
+  }
+
+  doLogin(): void {
+    authStore.doOAuth()
   }
 }
 </script>
@@ -65,5 +97,12 @@ $h: 84px;
     font-size: 13px;
     color: $c-white;
   }
+}
+.login {
+  font-size: 13px;
+  color: $c-white;
+}
+button {
+  @include button-reset;
 }
 </style>

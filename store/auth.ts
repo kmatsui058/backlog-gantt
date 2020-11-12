@@ -23,6 +23,7 @@ export default class AuthModule extends VuexModule {
   private refreshToken: string | null = null
   private self: UserData | null = null
   private selfImage: string | null = null
+  private loading: boolean = true
 
   get getBacklogDomain(): string {
     return this.backlogDomain
@@ -38,6 +39,10 @@ export default class AuthModule extends VuexModule {
 
   get getSelfImage(): string | null {
     return this.selfImage
+  }
+
+  get getLoading(): boolean {
+    return this.loading
   }
 
   @Mutation
@@ -71,6 +76,20 @@ export default class AuthModule extends VuexModule {
   @Mutation
   setSelfImage(value: string | null): void {
     this.selfImage = value
+  }
+
+  @Mutation
+  setLoading(value: boolean): void {
+    this.loading = value
+  }
+
+  @Mutation
+  logout(): void {
+    this.accessToken = null
+    this.refreshToken = null
+    this.code = null
+    this.self = null
+    this.selfImage = null
   }
 
   @Action
@@ -126,8 +145,9 @@ export default class AuthModule extends VuexModule {
 
   @Action
   async fetchSelf(): Promise<void> {
+    this.setLoading(true)
     if (!this.accessToken) {
-      throw new Error('no access token')
+      Promise.reject(new Error('no access token'))
     }
     console.log({ $apiConfig })
     const res: AxiosResponse<UserData> = await new DefaultApi($apiConfig)
@@ -143,6 +163,7 @@ export default class AuthModule extends VuexModule {
       })
     if (!res) return
     this.setSelf(res.data)
+    this.setLoading(false)
     await this.fetchUserImage(res.data.id.toFixed())
   }
 

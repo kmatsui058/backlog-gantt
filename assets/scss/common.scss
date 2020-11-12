@@ -1,5 +1,6 @@
 @import './normalize';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+@import './libs/v-tooltip';
 
 body {
   font-family: $ff-noto;
@@ -7,3 +8,5 @@ body {
 * {
   box-sizing: border-box;
 }
+
+

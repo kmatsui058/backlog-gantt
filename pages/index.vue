@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <input v-model="domain" type="text" />
-    <button @click="doLogin">login</button>
-    <button @click="dofetch">fetch</button>
     <ControllerBox title="hoge"> {{ self }}</ControllerBox>
   </div>
 </template>
@@ -14,16 +11,8 @@ import { authStore } from '@/store'
 import { UserData } from '~/api'
 @Component({ components: { ControllerBox } })
 export default class IndexComponent extends Vue {
-  get domain(): string {
-    return authStore.getBacklogDomain
-  }
-
   get self(): UserData | null {
     return authStore.getSelf
-  }
-
-  set domain(value: string) {
-    authStore.setBacklogDomain(value)
   }
 
   get code(): string | undefined {
@@ -40,10 +29,6 @@ export default class IndexComponent extends Vue {
     }
     authStore.setCode(this.code)
     authStore.fetchToken()
-  }
-
-  doLogin(): void {
-    authStore.doOAuth()
   }
 
   created(): void {
