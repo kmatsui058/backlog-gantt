@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import Axios, { AxiosError } from 'axios'
+import Axios, { AxiosError, AxiosResponse } from 'axios'
 import { $apiConfig } from '@/plugins/api-accessor'
 import {
   DefaultApi,
@@ -22,6 +22,8 @@ export default class AuthModule extends VuexModule {
   private accessToken: string | null = null
   private refreshToken: string | null = null
   private self: UserData | null = null
+  private selfImage: string | null = null
+
   get getBacklogDomain(): string {
     return this.backlogDomain
   }
@@ -32,6 +34,10 @@ export default class AuthModule extends VuexModule {
 
   get getSelf(): UserData | null {
     return this.self
+  }
+
+  get getSelfImage(): string | null {
+    return this.selfImage
   }
 
   @Mutation
@@ -60,6 +66,11 @@ export default class AuthModule extends VuexModule {
   @Mutation
   setSelf(value: UserData | null): void {
     this.self = value
+  }
+
+  @Mutation
+  setSelfImage(value: string | null): void {
+    this.selfImage = value
   }
 
   @Action
@@ -119,7 +130,7 @@ export default class AuthModule extends VuexModule {
       throw new Error('no access token')
     }
     console.log({ $apiConfig })
-    const res = await new DefaultApi($apiConfig)
+    const res: AxiosResponse<UserData> = await new DefaultApi($apiConfig)
       .apiV2UsersMyselfGet()
       .catch(async (err: AxiosError) => {
         console.log(err.response)
@@ -132,6 +143,7 @@ export default class AuthModule extends VuexModule {
       })
     if (!res) return
     this.setSelf(res.data)
+    await this.fetchUserImage(res.data.id.toFixed())
   }
 
   @Action
@@ -139,5 +151,31 @@ export default class AuthModule extends VuexModule {
     if (!this.getBacklogDomain) throw new Error('no domain data')
     if (!this.clientId) throw new Error('no client id')
     location.href = `${this.getBacklogDomain}/OAuth2AccessRequest.action?response_type=code&client_id=${this.clientId}`
+  }
+
+  @Action
+  async fetchUserImage(id: string): Promise<void> {
+    const res: AxiosResponse<Blob> = await new DefaultApi($apiConfig)
+      .apiV2UsersUserIdIconGet(id, {
+        responseType: 'blob',
+      })
+      .catch(async (err: AxiosError) => {
+        console.log(err.response)
+        if (err.response && err.response.status === 401) {
+          await this.refresh()
+          return Axios.request(err.config)
+        } else {
+          throw err
+        }
+      })
+    const reader = new FileReader()
+    reader.onload = (ev): void => {
+      const result = ev.target?.result
+      if (typeof result === 'string') {
+        this.setSelfImage(result)
+      }
+    }
+    reader.readAsDataURL(res.data)
+    console.log(typeof res.data)
   }
 }
