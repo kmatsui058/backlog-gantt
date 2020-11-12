@@ -7,6 +7,7 @@ import {
   Oauth2TokenRequestResponse,
   UserData,
 } from '~/api'
+import { filterStore } from '~/utils/store-accessor'
 
 @Module({
   name: 'auth',
@@ -164,7 +165,8 @@ export default class AuthModule extends VuexModule {
     if (!res) return
     this.setSelf(res.data)
     this.setLoading(false)
-    await this.fetchUserImage(res.data.id.toFixed())
+    this.fetchUserImage(res.data.id.toFixed())
+    filterStore.fetchProjects()
   }
 
   @Action

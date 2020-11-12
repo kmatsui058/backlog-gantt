@@ -72,7 +72,7 @@ $h: 84px;
   display: flex;
   align-items: center;
   height: $h;
-  padding: 0 36px;
+  padding: 0 $side-space;
 }
 .title {
   flex-grow: 1;
