@@ -1,9 +1,21 @@
 <template>
   <div class="default">
-    <header></header>
+    <header>
+      <default-header />
+    </header>
     <main><Nuxt /></main>
   </div>
 </template>
+<script lang="ts">
+import { Vue, Component } from 'nuxt-property-decorator'
+import DefaultHeader from '@/components/common/header/DefaultHeader.vue'
+@Component({ components: { DefaultHeader } })
+export default class DefaultLayout extends Vue {
+  get title(): string {
+    return this.$route.meta.title
+  }
+}
+</script>
 <style lang="scss" scoped>
 .default {
   background-color: #f1f3f9;

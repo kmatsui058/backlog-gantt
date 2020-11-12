@@ -46,7 +46,10 @@ export default class IndexComponent extends Vue {
     authStore.doOAuth()
   }
 
-  async created(): Promise<void> {}
+  created(): void {
+    this.$route.meta.title = 'Dashboard'
+  }
+
   mounted(): void {
     this.$router.push({ query: { code: undefined } })
   }

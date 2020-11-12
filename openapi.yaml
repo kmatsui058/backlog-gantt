@@ -103,6 +103,26 @@ paths:
               schema:
                 $ref : '#/components/schemas/ProjectListResponse'
 
+  /api/v2/users/{userId}/icon:
+    get:
+      summary: ユーザーのアイコンを取得
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+            example: "1234"
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+
 
 
 components:

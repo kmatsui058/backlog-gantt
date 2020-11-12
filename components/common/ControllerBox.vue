@@ -9,12 +9,12 @@
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
-export default class IndexComponent extends Vue {
+export default class ControllerBox extends Vue {
   @Prop({ type: String, required: true }) readonly title!: string
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .controller-box {
   background-color: $c-white;
   border-radius: 10px;
