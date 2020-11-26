@@ -16,7 +16,7 @@
         </v-popover>
         <v-popover v-else>
           <button class="login">Login</button>
-          <form slot="popover" class="login__form" @submit.prevent="login">
+          <form slot="popover" class="login__form" @submit.prevent="doLogin">
             <input v-model="domain" type="text" />
             <button @click="doLogin">login</button>
           </form>

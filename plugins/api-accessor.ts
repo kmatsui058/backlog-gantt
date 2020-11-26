@@ -18,7 +18,9 @@ declare module 'vuex/types/index' {
     $apiConfig: Configuration
   }
 }
-export const $apiConfig: Configuration = { baseOptions: {} }
+export const $apiConfig: Configuration = {
+  baseOptions: {},
+}
 
 const accessor: Plugin = (_, inject) => {
   if (authStore.getAccessToken) {

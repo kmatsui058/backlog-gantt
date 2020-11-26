@@ -3,7 +3,27 @@ import Axios, { AxiosError, AxiosResponse } from 'axios'
 import { $apiConfig } from '@/plugins/api-accessor'
 import { DefaultApi, UserData, ProjectItem } from '~/api'
 import { authStore } from '~/utils/store-accessor'
-
+async function fetchUserImage(id: number): Promise<string> {
+  return await new Promise((resolve) => resolve(id.toFixed()))
+  // console.log(`fetchUserImage ${id}`)
+  // const res: AxiosResponse<Blob> | void = await new DefaultApi($apiConfig)
+  //   .apiV2UsersUserIdIconGet(id.toFixed(), {
+  //     responseType: 'blob',
+  //   })
+  //   .catch((err) => console.log(err))
+  // if (!res) throw new Error('no res')
+  // return new Promise((resolve, reject) => {
+  //   const reader = new FileReader()
+  //   reader.onload = (): void => {
+  //     if (typeof reader.result === 'string') {
+  //       resolve(reader.result)
+  //     } else {
+  //       reject(new TypeError('invalid image type'))
+  //     }
+  //   }
+  //   reader.readAsDataURL(res.data)
+  // })
+}
 export interface Project {
   data: ProjectItem
   users: User[]
@@ -91,29 +111,11 @@ export default class AuthModule extends VuexModule {
     await Promise.all(
       res.data.map(
         async (user): Promise<void> => {
-          const image = await this.fetchUserImage(user.id)
+          const image = await fetchUserImage(user.id)
           users.push({ data: user, image })
         }
       )
     )
     return users
-  }
-
-  @Action
-  async fetchUserImage(id: number): Promise<string> {
-    console.log(`fetchUserImage ${id}`)
-    const res: AxiosResponse<Blob> = await new DefaultApi(
-      $apiConfig
-    ).apiV2UsersUserIdIconGet(id.toFixed(), {
-      responseType: 'blob',
-    })
-
-    return new Promise((resolve) => {
-      const reader = new FileReader()
-      reader.onload = (): void => {
-        if (typeof reader.result === 'string') resolve(reader.result)
-      }
-      reader.readAsDataURL(res.data)
-    })
   }
 }

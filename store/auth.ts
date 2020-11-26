@@ -112,7 +112,9 @@ export default class AuthModule extends VuexModule {
           throw err
         }
       })
-    if (!res) return
+    if (!res) {
+      return
+    }
     this.setToken(res.data)
     await this.fetchSelf()
   }
@@ -162,9 +164,9 @@ export default class AuthModule extends VuexModule {
           throw err
         }
       })
+    this.setLoading(false)
     if (!res) return
     this.setSelf(res.data)
-    this.setLoading(false)
     this.fetchUserImage(res.data.id.toFixed())
     filterStore.fetchProjects()
   }
@@ -199,6 +201,5 @@ export default class AuthModule extends VuexModule {
       }
     }
     reader.readAsDataURL(res.data)
-    console.log(typeof res.data)
   }
 }

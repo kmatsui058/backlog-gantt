@@ -1,3 +1,5 @@
+import path from 'path'
+import fs from 'fs'
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
@@ -53,7 +55,15 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
-
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, 'localhost-key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'localhost.pem')),
+    },
+    // 以下その他設定...
+  },
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extend: (config) => {
