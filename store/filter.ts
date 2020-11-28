@@ -87,8 +87,10 @@ export default class AuthModule extends VuexModule {
     await Promise.all(
       res.data.map(
         async (project): Promise<void> => {
-          const users = await this.fetchUsers(project.id)
-          projects.push({ data: project, users })
+          const users = await this.fetchUsers(project.id).catch((err) =>
+            console.log(err)
+          )
+          projects.push({ data: project, users: users || [] })
         }
       )
     )
@@ -113,7 +115,15 @@ export default class AuthModule extends VuexModule {
     await Promise.all(
       res.data.map(
         async (user): Promise<void> => {
-          const image = await fetchUserImage(user.id)
+          const test = this.allUsers.find(
+            (refUser) => refUser.data.id === user.id
+          )
+          console.log({ test })
+          const image = test
+            ? test.image
+            : (await fetchUserImage(user.id).catch((err) =>
+                console.log(err)
+              )) || ''
           users.push({ data: user, image })
         }
       )
