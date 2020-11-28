@@ -27,7 +27,7 @@ async function fetchUserImage(id: number): Promise<string> {
 }
 export interface Project {
   data: ProjectItem
-  users: User[]
+  users: number[]
 }
 
 export interface User {
@@ -42,7 +42,7 @@ export interface User {
 })
 export default class AuthModule extends VuexModule {
   private projects: Project[] = []
-
+  private users: User[] = []
   get getProjects(): Project[] {
     return this.projects
   }
@@ -54,21 +54,23 @@ export default class AuthModule extends VuexModule {
   }
 
   get allUsers(): User[] {
-    const result: User[] = []
-    this.projects.forEach((project): void => {
-      project.users.forEach((user): void => {
-        const test = result.find((refUser) => {
-          return refUser.data.id === user.data.id
-        })
-        if (!test) result.push(user)
-      })
-    })
-    return result
+    return this.users
   }
 
   @Mutation
   setProjects(value: Project[]): void {
     this.projects = value
+  }
+
+  @Mutation
+  setUsers(users: User[]): void {
+    this.users = users
+  }
+
+  @Mutation
+  pushUsers(user: User): void {
+    const test = this.users.find((refUser) => refUser.data.id === user.data.id)
+    if (!test) this.users.push(user)
   }
 
   @Action
@@ -94,13 +96,20 @@ export default class AuthModule extends VuexModule {
         }
       )
     )
-    console.log({ projects })
 
     this.setProjects(projects)
   }
 
   @Action
-  async fetchUsers(projectId: number): Promise<User[]> {
+  async addUser(user: UserData): Promise<void> {
+    const test = this.allUsers.find((refUser) => refUser.data.id === user.id)
+    if (test) return
+    const image = await fetchUserImage(user.id).catch((err) => console.log(err))
+    this.pushUsers({ data: user, image: image || '' })
+  }
+
+  @Action
+  async fetchUsers(projectId: number): Promise<number[]> {
     const res: AxiosResponse<UserData[]> = await new DefaultApi($apiConfig)
       .apiV2ProjectsProjectIdOrKeyUsersGet(projectId.toFixed())
       .catch(async (err: AxiosError) => {
@@ -111,24 +120,18 @@ export default class AuthModule extends VuexModule {
           throw err
         }
       })
-    const users: User[] = []
+    const users: number[] = []
     await Promise.all(
       res.data.map(
         async (user): Promise<void> => {
           const test = this.allUsers.find(
             (refUser) => refUser.data.id === user.id
           )
-          console.log({ test })
-          const image = test
-            ? test.image
-            : (await fetchUserImage(user.id).catch((err) =>
-                console.log(err)
-              )) || ''
-          users.push({ data: user, image })
+          users.push(user.id)
+          if (!test) await this.addUser(user)
         }
       )
     )
-    console.log({ users })
     return users
   }
 }
