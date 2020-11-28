@@ -43,6 +43,9 @@ export interface User {
 export default class AuthModule extends VuexModule {
   private projects: Project[] = []
   private users: User[] = []
+  private selectedUserId: string[] = []
+  private selectedProjectId: string[] = []
+
   get getProjects(): Project[] {
     return this.projects
   }
@@ -55,6 +58,18 @@ export default class AuthModule extends VuexModule {
 
   get allUsers(): User[] {
     return this.users
+  }
+
+  get filteredUsers(): User[] {
+    return this.users.filter((testUser) =>
+      this.selectedUserId.includes(testUser.data.id.toFixed())
+    )
+  }
+
+  get filteredProjects(): Project[] {
+    return this.projects.filter((testProject) =>
+      this.selectedProjectId.includes(testProject.data.id.toFixed())
+    )
   }
 
   @Mutation
@@ -71,6 +86,16 @@ export default class AuthModule extends VuexModule {
   pushUsers(user: User): void {
     const test = this.users.find((refUser) => refUser.data.id === user.data.id)
     if (!test) this.users.push(user)
+  }
+
+  @Mutation
+  setSelectedUsers(userIds: string[]): void {
+    this.selectedUserId = userIds
+  }
+
+  @Mutation
+  setSelectedProjects(projectIds: string[]): void {
+    this.selectedProjectId = projectIds
   }
 
   @Action
