@@ -14,6 +14,7 @@
     "parseAPI": "openapi-generator-cli generate --enable-post-process-file -i ./openapi.yaml -t ./template -o ./api --generator-name typescript-axios -c ./openapi-config.yaml"
   },
   "dependencies": {
+    "@holiday-jp/holiday_jp": "^2.2.3",
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dotenv": "^1.4.1",
