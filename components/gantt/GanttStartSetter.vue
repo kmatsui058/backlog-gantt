@@ -19,7 +19,7 @@ import { ganttStore } from '~/store'
 @Component({
   components: { CalendarIcon },
 })
-export default class GanttPeriodSetter extends Vue {
+export default class GanttStartSetter extends Vue {
   date = new Date()
 
   get startDate(): string {
@@ -35,7 +35,7 @@ export default class GanttPeriodSetter extends Vue {
     ganttStore.fetchGantt()
   }
 
-  @Watch('startDate')
+  @Watch('startDate', { immediate: true })
   onChangeStartDate(): void {
     this.date = new Date(ganttStore.getStartDate.toISOString())
   }

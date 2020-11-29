@@ -39,7 +39,7 @@ $border: 1px solid $c-navy;
   &:hover {
     color: $c-sky;
   }
-  &.active {
+  &.is-active {
     color: $c-purple;
   }
   &:not(:last-child) {

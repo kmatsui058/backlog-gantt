@@ -15,7 +15,7 @@ interface StepButton extends Button {
 @Component({
   components: { ButtonSet },
 })
-export default class GanttPeriodSetter extends Vue {
+export default class StepController extends Vue {
   get startDate(): Dayjs {
     return ganttStore.getStartDate
   }
