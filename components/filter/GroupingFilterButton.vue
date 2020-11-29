@@ -1,25 +1,23 @@
 <template>
   <div class="grouping-filter-button">
-    <ControllerBox
-      title="GROUPING"
-      help="ガントをグルーピング表示させます"
-      :auto-hide="true"
-    >
-      <v-popover trigger="click" offset="20px">
-        <div class="value">{{ grouping }}</div>
+    <ControllerBox title="GROUPING" help="ガントをグルーピング表示させます">
+      <client-only>
+        <v-popover trigger="click" offset="20px">
+          <div class="value">{{ grouping }}</div>
 
-        <div slot="popover" class="popup">
-          <button
-            v-for="(option, key) in options"
-            :key="key"
-            v-close-popover
-            class="popup__option"
-            @click="submit(option)"
-          >
-            {{ option }}
-          </button>
-        </div>
-      </v-popover>
+          <div slot="popover" class="popup">
+            <button
+              v-for="(option, key) in options"
+              :key="key"
+              v-close-popover
+              class="popup__option"
+              @click="submit(option)"
+            >
+              {{ option }}
+            </button>
+          </div>
+        </v-popover>
+      </client-only>
     </ControllerBox>
   </div>
 </template>
