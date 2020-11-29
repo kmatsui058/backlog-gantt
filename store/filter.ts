@@ -58,6 +58,8 @@ export interface User {
   data: UserData
   image: string
 }
+
+export type Grouping = 'none' | 'member' | 'project'
 @Module({
   name: 'filter',
   stateFactory: true,
@@ -70,6 +72,7 @@ export default class AuthModule extends VuexModule {
   private selectedUserId: number[] = []
   private selectedProjectId: number[] = []
   private loading: boolean = true
+  private grouping: Grouping = 'none'
 
   get getProjects(): Project[] {
     return this.projects
@@ -109,6 +112,10 @@ export default class AuthModule extends VuexModule {
     return this.loading
   }
 
+  get getGrouping(): Grouping {
+    return this.grouping
+  }
+
   @Mutation
   setProjects(value: Project[]): void {
     this.projects = value
@@ -146,6 +153,11 @@ export default class AuthModule extends VuexModule {
     this.users = []
     this.selectedUserId = []
     this.selectedProjectId = []
+  }
+
+  @Mutation
+  setGrouping(value: Grouping): void {
+    this.grouping = value
   }
 
   @Action

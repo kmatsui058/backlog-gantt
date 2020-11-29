@@ -1,16 +1,23 @@
 <template>
   <div class="controller-box">
-    <p class="title">{{ title }}</p>
+    <div class="head">
+      <span class="title">{{ title }}</span>
+      <v-popover v-if="help" class="help" trigger="hover focus" offset="10px">
+        <HelpCircle class="help__icon" />
+        <div slot="popover" class="popup">{{ help }}</div>
+      </v-popover>
+    </div>
     <div class="slot"><slot /></div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-@Component
+import HelpCircle from '@/assets/images/icons/help-circle.svg?inline'
+@Component({ components: { HelpCircle } })
 export default class ControllerBox extends Vue {
   @Prop({ type: String, required: true }) readonly title!: string
+  @Prop({ type: String, required: false }) readonly help?: string
 }
 </script>
 
@@ -25,11 +32,24 @@ export default class ControllerBox extends Vue {
   text-align: left;
   vertical-align: baseline;
 }
+$head-height: 11;
+.head {
+  display: flex;
+}
+.help {
+  height: #{$head-height}px;
+  line-height: #{$head-height}px;
+  &__icon {
+    width: #{$head-height}px;
+    height: #{$head-height}px;
+  }
+}
 .title {
-  font-size: 11px;
+  font-size: #{$head-height}px;
   color: $c-gray;
   margin: 0;
   text-transform: uppercase;
+  flex-grow: 1;
 }
 .slot {
   height: 30px;

@@ -4,7 +4,10 @@
     :class="{ disabled: projectLoading }"
     @click="onClick"
   >
-    <ControllerBox title="PROJECT">
+    <ControllerBox
+      title="PROJECT"
+      help="ガントを表示するプロジェクトを選択します"
+    >
       <div v-if="projectLoading" class="loading">wait a moment...</div>
       <IconSelector v-else-if="icons.length" :icons="icons" />
       <div v-else class="no-member">select project...</div>
