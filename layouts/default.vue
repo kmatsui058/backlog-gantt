@@ -8,6 +8,9 @@
       <modal name="member-filter">
         <MemberFilter />
       </modal>
+      <modal name="project-filter">
+        <ProjectFilter />
+      </modal>
     </client-only>
   </div>
 </template>
@@ -15,7 +18,8 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import DefaultHeader from '@/components/common/header/DefaultHeader.vue'
 import MemberFilter from '@/components/filter/MemberFilter.vue'
-@Component({ components: { DefaultHeader, MemberFilter } })
+import ProjectFilter from '@/components/filter/ProjectFilter.vue'
+@Component({ components: { DefaultHeader, MemberFilter, ProjectFilter } })
 export default class DefaultLayout extends Vue {
   get title(): string {
     return this.$route.meta.title

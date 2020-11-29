@@ -439,6 +439,57 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary プロジェクトアイコンの取得
+         * @param {string} projectIdOrKey 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV2ProjectsProjectIdOrKeyImageGet: async (projectIdOrKey: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'projectIdOrKey' is not null or undefined
+            if (projectIdOrKey === null || projectIdOrKey === undefined) {
+                throw new RequiredError('projectIdOrKey','Required parameter projectIdOrKey was null or undefined when calling apiV2ProjectsProjectIdOrKeyImageGet.');
+            }
+            const localVarPath = `/api/v2/projects/{projectIdOrKey}/image`
+                .replace(`{${"projectIdOrKey"}}`, encodeURIComponent(String(projectIdOrKey)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? await configuration.accessToken()
+                    : await configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary プロジェクトユーザー一覧の取得
          * @param {string} projectIdOrKey 
          * @param {*} [options] Override http request option.
@@ -701,6 +752,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary プロジェクトアイコンの取得
+         * @param {string} projectIdOrKey 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV2ProjectsProjectIdOrKeyImageGet(projectIdOrKey: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<any>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiV2ProjectsProjectIdOrKeyImageGet(projectIdOrKey, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary プロジェクトユーザー一覧の取得
          * @param {string} projectIdOrKey 
          * @param {*} [options] Override http request option.
@@ -793,6 +858,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary プロジェクトアイコンの取得
+         * @param {string} projectIdOrKey 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV2ProjectsProjectIdOrKeyImageGet(projectIdOrKey: string, options?: any): AxiosPromise<any> {
+            return DefaultApiFp(configuration).apiV2ProjectsProjectIdOrKeyImageGet(projectIdOrKey, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary プロジェクトユーザー一覧の取得
          * @param {string} projectIdOrKey 
          * @param {*} [options] Override http request option.
@@ -870,6 +945,18 @@ export class DefaultApi extends BaseAPI {
      */
     public apiV2ProjectsGet(archived?: string, options?: any) {
         return DefaultApiFp(this.configuration).apiV2ProjectsGet(archived, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary プロジェクトアイコンの取得
+     * @param {string} projectIdOrKey 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public apiV2ProjectsProjectIdOrKeyImageGet(projectIdOrKey: string, options?: any) {
+        return DefaultApiFp(this.configuration).apiV2ProjectsProjectIdOrKeyImageGet(projectIdOrKey, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
