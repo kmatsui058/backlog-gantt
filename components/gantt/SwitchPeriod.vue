@@ -8,7 +8,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import ButtonSet, { Button } from '@/components/common/ButtonSet.vue'
 import { dateStore } from '~/store'
-import { Period } from '~/store/gantt'
+import { Period } from '~/store/date'
 interface StepButton extends Button {
   value: Period
 }
