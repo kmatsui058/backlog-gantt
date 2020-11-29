@@ -1,27 +1,29 @@
 <template>
   <div class="status-filter-button">
-    <ControllerBox title="Status" :wrappable="true">
-      <RoundButton
-        text="すべて"
-        :checked="statusFilter === 'all'"
-        class="item"
-        @click="onClickStaticItem('all')"
-      />
-      <RoundButton
-        v-for="(status, key) in statuses"
-        :key="key"
-        :text="status"
-        :checked="statusFilter.includes(status)"
-        class="item"
-        @click="onClickFetchedItem(status)"
-      />
-      <RoundButton
-        text="完了以外"
-        :checked="statusFilter === 'without-complete'"
-        class="item"
-        @click="onClickStaticItem('without-complete')"
-      />
-    </ControllerBox>
+    <client-only>
+      <ControllerBox title="Status" :wrappable="true">
+        <RoundButton
+          text="すべて"
+          :checked="statusFilter === 'all'"
+          class="item"
+          @click="onClickStaticItem('all')"
+        />
+        <RoundButton
+          v-for="(status, key) in statuses"
+          :key="key"
+          :text="status"
+          :checked="statusFilter.includes(status)"
+          class="item"
+          @click="onClickFetchedItem(status)"
+        />
+        <RoundButton
+          text="完了以外"
+          :checked="statusFilter === 'without-complete'"
+          class="item"
+          @click="onClickStaticItem('without-complete')"
+        />
+      </ControllerBox>
+    </client-only>
   </div>
 </template>
 

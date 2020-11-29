@@ -32,6 +32,7 @@ export default class GanttPeriodSetter extends Vue {
 
   onInput(date: Date): void {
     ganttStore.setStart(dayjs(date).toISOString())
+    ganttStore.fetchGantt()
   }
 
   @Watch('startDate')
