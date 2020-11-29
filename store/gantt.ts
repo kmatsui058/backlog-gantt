@@ -19,12 +19,17 @@ export interface Group {
 })
 export default class DateModule extends VuexModule {
   private response: Task[] | null = null
+  private loading = false
   get getTask(): Task[] | null {
     return this.response
   }
 
+  get getLoading(): boolean {
+    return this.loading
+  }
+
   get groupingTask(): Group[] | null {
-    if (!this.response) return null
+    if (!this.response || this.response.length === 0) return null
     const grouping = filterStore.getGrouping
     switch (grouping) {
       case 'none': {
@@ -88,8 +93,14 @@ export default class DateModule extends VuexModule {
     this.response = value
   }
 
+  @Mutation
+  setLoading(value: boolean): void {
+    this.loading = value
+  }
+
   @Action
   async fetchGantt(): Promise<void> {
+    this.setLoading(true)
     this.setTask(null)
     const projectId = filterStore.getSelectedProjectId.length
       ? filterStore.getSelectedProjectId
@@ -121,7 +132,10 @@ export default class DateModule extends VuexModule {
         return qs.stringify(params)
       },
     }).catch((err: AxiosError) => console.log(err.config))
-    if (!res) return
+    this.setLoading(false)
+    if (!res) {
+      return
+    }
     this.setTask(res.data)
   }
 }

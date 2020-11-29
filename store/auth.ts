@@ -7,7 +7,7 @@ import {
   Oauth2TokenRequestResponse,
   UserData,
 } from '~/api'
-import { filterStore } from '~/utils/store-accessor'
+import { filterStore, ganttStore } from '~/utils/store-accessor'
 
 @Module({
   name: 'auth',
@@ -24,7 +24,7 @@ export default class AuthModule extends VuexModule {
   private refreshToken: string | null = null
   private self: UserData | null = null
   private selfImage: string | null = null
-  private loading: boolean = true
+  private loading: boolean = false
 
   get getBacklogDomain(): string {
     return this.backlogDomain.replace(/\/$/, '')
@@ -92,6 +92,8 @@ export default class AuthModule extends VuexModule {
     this.self = null
     this.selfImage = null
     filterStore.initialize()
+    ganttStore.setTask(null)
+    localStorage.clear()
   }
 
   @Action
@@ -150,6 +152,7 @@ export default class AuthModule extends VuexModule {
   @Action
   async fetchSelf(): Promise<void> {
     this.setLoading(true)
+    filterStore.initialize()
     if (!this.accessToken) {
       Promise.reject(new Error('no access token'))
       return
@@ -170,7 +173,6 @@ export default class AuthModule extends VuexModule {
     if (!res) return
     this.setSelf(res.data)
     this.fetchUserImage(res.data.id.toFixed())
-    filterStore.fetchProjects()
   }
 
   @Action

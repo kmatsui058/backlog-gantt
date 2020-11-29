@@ -32,7 +32,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import ControllerBox from '@/components/common/ControllerBox.vue'
 import IconSelector from '@/components/common/IconSelector.vue'
 import RoundButton from '@/components/common/RoundButton.vue'
-import { filterStore } from '~/store'
+import { filterStore, ganttStore } from '~/store'
 import { StatusFilter } from '~/store/filter'
 @Component({ components: { ControllerBox, IconSelector, RoundButton } })
 export default class StatusFilterButton extends Vue {
@@ -46,11 +46,13 @@ export default class StatusFilterButton extends Vue {
 
   onClickStaticItem(value: 'all' | 'without-complete'): void {
     filterStore.setStatusFilter(value)
+    ganttStore.fetchGantt()
   }
 
   onClickFetchedItem(value: string): void {
     if (typeof this.statusFilter === 'string') {
       filterStore.setStatusFilter([value])
+      ganttStore.fetchGantt()
       return
     }
     const testIndex = this.statusFilter.findIndex((status) => status === value)
@@ -63,6 +65,7 @@ export default class StatusFilterButton extends Vue {
       result.push(value)
       filterStore.setStatusFilter(result)
     }
+    ganttStore.fetchGantt()
   }
 }
 </script>
