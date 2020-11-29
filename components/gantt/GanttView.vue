@@ -2,15 +2,16 @@
   <div class="gantt-view">
     <div class="wrapper">
       <div class="title">Gantt View</div>
+      <GanttPeriodSetter class="head" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-
+import GanttPeriodSetter from '@/components/gantt/GanttPeriodSetter.vue'
 @Component({
-  components: {},
+  components: { GanttPeriodSetter },
 })
 export default class GanttView extends Vue {}
 </script>
