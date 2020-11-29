@@ -15,7 +15,7 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import CalendarIcon from '@/assets/images/icons/calendar.svg?inline'
 import dayjs from 'dayjs'
-import { ganttStore } from '~/store'
+import { dateStore } from '~/store'
 @Component({
   components: { CalendarIcon },
 })
@@ -23,21 +23,21 @@ export default class GanttStartSetter extends Vue {
   date = new Date()
 
   get startDate(): string {
-    return ganttStore.getStartDate.format('YYYY-MM-DD')
+    return dateStore.getStartDate.format('YYYY-MM-DD')
   }
 
   get endDate(): string {
-    return ganttStore.getEndDate.format('YYYY-MM-DD')
+    return dateStore.getEndDate.format('YYYY-MM-DD')
   }
 
   onInput(date: Date): void {
-    ganttStore.setStart(dayjs(date).toISOString())
-    ganttStore.fetchGantt()
+    dateStore.setStart(dayjs(date).toISOString())
+    dateStore.fetchGantt()
   }
 
   @Watch('startDate', { immediate: true })
   onChangeStartDate(): void {
-    this.date = new Date(ganttStore.getStartDate.toISOString())
+    this.date = new Date(dateStore.getStartDate.toISOString())
   }
 }
 </script>

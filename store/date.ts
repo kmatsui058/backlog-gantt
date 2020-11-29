@@ -14,12 +14,12 @@ export function addPeriod(start: Dayjs, period: Period): Dayjs {
   }
 }
 @Module({
-  name: 'gantt',
+  name: 'date',
   stateFactory: true,
   namespaced: true,
   preserveState: false,
 })
-export default class GanttModule extends VuexModule {
+export default class DateModule extends VuexModule {
   private start: string = dayjs().toISOString()
   private period: Period | null = 'quarter'
   private end: string = addPeriod(dayjs(this.start), 'quarter').toISOString()

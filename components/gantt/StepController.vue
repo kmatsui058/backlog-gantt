@@ -8,7 +8,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import dayjs, { Dayjs } from 'dayjs'
 import ButtonSet, { Button } from '@/components/common/ButtonSet.vue'
-import { ganttStore } from '~/store'
+import { dateStore } from '~/store'
 interface StepButton extends Button {
   value: 'today' | 'back' | 'next'
 }
@@ -17,7 +17,7 @@ interface StepButton extends Button {
 })
 export default class StepController extends Vue {
   get startDate(): Dayjs {
-    return ganttStore.getStartDate
+    return dateStore.getStartDate
   }
 
   get buttons(): StepButton[] {
@@ -31,15 +31,15 @@ export default class StepController extends Vue {
   onChange(button: StepButton): void {
     switch (button.value) {
       case 'today':
-        ganttStore.setStart(dayjs().toISOString())
+        dateStore.setStart(dayjs().toISOString())
         break
       case 'back':
-        ganttStore.setStart(this.startDate.add(-7, 'day').toISOString())
+        dateStore.setStart(this.startDate.add(-7, 'day').toISOString())
         break
       case 'next':
-        ganttStore.setStart(this.startDate.add(7, 'day').toISOString())
+        dateStore.setStart(this.startDate.add(7, 'day').toISOString())
     }
-    ganttStore.fetchGantt()
+    dateStore.fetchGantt()
   }
 }
 </script>
