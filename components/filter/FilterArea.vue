@@ -25,9 +25,10 @@ export default class FilterArea extends Vue {}
   $gap: 20;
 
   display: flex;
-  padding: 0 #{$side-space-normal - $gap}px;
+  flex-wrap: wrap;
+  padding: 0 #{$side-space-normal - $gap/2}px;
   &__item {
-    margin: 0 #{$gap}px;
+    margin: #{$gap/2}px;
   }
 }
 </style>
