@@ -23,8 +23,8 @@ export default class DateModule extends VuexModule {
     return this.response
   }
 
-  get groupingTask(): Group[] {
-    if (!this.response) return []
+  get groupingTask(): Group[] | null {
+    if (!this.response) return null
     const grouping = filterStore.getGrouping
     switch (grouping) {
       case 'none': {
@@ -84,12 +84,13 @@ export default class DateModule extends VuexModule {
   }
 
   @Mutation
-  setTask(value: Task[]): void {
+  setTask(value: Task[] | null): void {
     this.response = value
   }
 
   @Action
   async fetchGantt(): Promise<void> {
+    this.setTask(null)
     const projectId = filterStore.getSelectedProjectId.length
       ? filterStore.getSelectedProjectId
       : undefined
