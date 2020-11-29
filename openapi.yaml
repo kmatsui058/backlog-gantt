@@ -142,6 +142,26 @@ paths:
               schema:
                 type: string
                 format: binary
+  /api/v2/projects/{projectIdOrKey}/statuses:
+    get:
+      summary: プロジェクトの状態一覧の取得
+      parameters:
+        - in: path
+          name: projectIdOrKey
+          required: true
+          schema:
+            type: string
+            example: "1234"
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+
   /api/v2/users/{userId}/icon:
     get:
       summary: ユーザーのアイコンを取得
@@ -376,6 +396,55 @@ components:
       - mailAddress
       title: The root schema
       type: object
+    Status:
+      description: 課題に設定できる状態
+      example:
+      -   color: '#ed8077'
+          displayOrder: 1000
+          id: 1
+          name: 未対応
+          projectId: 1
+      properties:
+          color:
+              default: ''
+              description: An explanation about the purpose of this instance.
+              example: '#ed8077'
+              title: The color schema
+              type: string
+          displayOrder:
+              default: 0
+              description: An explanation about the purpose of this instance.
+              example: 1000
+              title: The displayOrder schema
+              type: integer
+          id:
+              default: 0
+              description: An explanation about the purpose of this instance.
+              example: 1
+              title: The id schema
+              type: integer
+          name:
+              default: ''
+              description: An explanation about the purpose of this instance.
+              example: 未対応
+              title: The name schema
+              type: string
+          projectId:
+              default: 0
+              description: An explanation about the purpose of this instance.
+              example: 1
+              title: The projectId schema
+              type: integer
+      required:
+      - id
+      - projectId
+      - name
+      - color
+      - displayOrder
+      title: Status
+      type: object
+
+
   securitySchemes:
     bearerAuth:
       type: http

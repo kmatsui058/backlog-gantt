@@ -1,17 +1,14 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import Axios, { AxiosError, AxiosResponse } from 'axios'
 import { $apiConfig } from '@/plugins/api-accessor'
-import { DefaultApi, UserData, ProjectItem } from '~/api'
+import { DefaultApi, UserData, ProjectItem, Status } from '~/api'
 import { authStore } from '~/utils/store-accessor'
-async function fetchUserImage(id: number): Promise<string> {
-  // return await new Promise((resolve) => resolve(id.toFixed()))
-  console.log(`fetchUserImage ${id}`)
+export async function fetchUserImage(id: number): Promise<string> {
   const res: AxiosResponse<Blob> | void = await new DefaultApi($apiConfig)
     .apiV2UsersUserIdIconGet(id.toFixed(), {
       responseType: 'blob',
     })
     .catch((err) => console.log(err))
-  console.log(res)
   if (!res) throw new Error('no res')
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -26,15 +23,12 @@ async function fetchUserImage(id: number): Promise<string> {
   })
 }
 
-async function fetchProjectImage(id: number): Promise<string> {
-  // return await new Promise((resolve) => resolve(id.toFixed()))
-  console.log(`fetchProjectImage ${id}`)
+export async function fetchProjectImage(id: number): Promise<string> {
   const res: AxiosResponse<Blob> | void = await new DefaultApi($apiConfig)
     .apiV2ProjectsProjectIdOrKeyImageGet(id.toFixed(), {
       responseType: 'blob',
     })
     .catch((err) => console.log(err))
-  console.log(res)
   if (!res) throw new Error('no res')
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -48,10 +42,19 @@ async function fetchProjectImage(id: number): Promise<string> {
     reader.readAsDataURL(res.data)
   })
 }
+
+export async function fetchProjectStatus(id: number): Promise<Status[]> {
+  const res = await new DefaultApi($apiConfig)
+    .apiV2ProjectsProjectIdOrKeyStatusesGet(id.toFixed())
+    .catch((err) => console.log(err))
+  if (!res) throw new Error('no res')
+  return res.data
+}
 export interface Project {
   data: ProjectItem
   image: string
   users: number[]
+  statuses: Status[]
 }
 
 export interface User {
@@ -60,6 +63,7 @@ export interface User {
 }
 
 export type Grouping = 'none' | 'member' | 'project'
+export type StatusFilter = 'all' | 'without-complete' | string[]
 @Module({
   name: 'filter',
   stateFactory: true,
@@ -73,6 +77,7 @@ export default class AuthModule extends VuexModule {
   private selectedProjectId: number[] = []
   private loading: boolean = true
   private grouping: Grouping = 'none'
+  private statusFilter: StatusFilter = 'without-complete'
 
   get getProjects(): Project[] {
     return this.projects
@@ -114,6 +119,20 @@ export default class AuthModule extends VuexModule {
 
   get getGrouping(): Grouping {
     return this.grouping
+  }
+
+  get getStatusFilter(): StatusFilter {
+    return this.statusFilter
+  }
+
+  get allStatusNames(): string[] {
+    const result: string[] = []
+    this.projects.forEach((project) => {
+      project.statuses.forEach((status) => {
+        if (!result.includes(status.name)) result.push(status.name)
+      })
+    })
+    return result
   }
 
   @Mutation
@@ -160,6 +179,11 @@ export default class AuthModule extends VuexModule {
     this.grouping = value
   }
 
+  @Mutation
+  setStatusFilter(value: StatusFilter): void {
+    this.statusFilter = value
+  }
+
   @Action
   async fetchProjects(): Promise<void> {
     this.setLoading(true)
@@ -185,10 +209,14 @@ export default class AuthModule extends VuexModule {
           const image = await fetchProjectImage(project.id).catch((err) =>
             console.log(err)
           )
+          const statuses = await fetchProjectStatus(project.id).catch((err) =>
+            console.log(err)
+          )
           projects.push({
             data: project,
             users: users || [],
             image: image || '',
+            statuses: statuses || [],
           })
         }
       )
