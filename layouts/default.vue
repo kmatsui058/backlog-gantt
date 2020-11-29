@@ -30,6 +30,8 @@ export default class DefaultLayout extends Vue {
 .default {
   background-color: #f1f3f9;
   position: relative;
+  min-height: 100vh;
+
   &::before {
     content: '';
     display: block;
