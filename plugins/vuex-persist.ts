@@ -1,8 +1,10 @@
 import VuexPersistence from 'vuex-persist'
 import { Plugin } from '@nuxt/types'
-const vuexPersit: Plugin = ({ store }) => {
+
+const vuexPersist: Plugin = ({ store }) => {
   new VuexPersistence({
     /* your options */
   }).plugin(store)
 }
-export default vuexPersit
+
+export default vuexPersist

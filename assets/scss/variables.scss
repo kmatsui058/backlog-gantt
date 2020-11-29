@@ -4,3 +4,18 @@ $c-navy: #172B4D;
 $c-sky: #11CDEF;
 $c-purple: #7764E4;
 $c-gray: #8898AA;
+
+$side-space-normal: 38;
+$side-space: #{$side-space-normal}px;
+
+$display-min-width-normal: 1300;
+$display-min-width: #{$display-min-width-normal}px;
+
+$table-row-height-normal: 40;
+$table-row-height: #{$table-row-height-normal}px;
+
+$table-col-width-normal: 20;
+$table-col-width: #{$table-col-width-normal}px;
+
+$table-head-height-normal: 30;
+$table-head-height: #{$table-head-height-normal}px;

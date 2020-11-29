@@ -1,5 +1,4 @@
 {
-  "vetur.experimental.templateInterpolationService": false,
   "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
   "typescript.format.insertSpaceBeforeFunctionParenthesis": true,
   "css.validate": false,

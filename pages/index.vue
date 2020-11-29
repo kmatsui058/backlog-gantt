@@ -1,41 +1,41 @@
 <template>
   <div class="container">
-    <input v-model="domainName" type="text" />
-    <button @click="doLogin">login</button>
-    <ControllerBox title="hoge"> hogegege </ControllerBox>
-    aaaaああああ
+    <FilterArea></FilterArea>
+    <GanttView />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import ControllerBox from '@/components/common/ControllerBox.vue'
-import { authStore } from '~/store'
+import FilterArea from '@/components/filter/FilterArea.vue'
+import GanttView from '@/components/gantt/GanttView.vue'
 
-@Component({ components: { ControllerBox } })
+import { authStore, filterStore } from '@/store'
+import { User } from '@/store/filter'
+import { UserData } from '~/api'
+@Component({ components: { FilterArea, GanttView } })
 export default class IndexComponent extends Vue {
-  get domainName(): string {
-    return authStore.getDomainName
+  get self(): UserData | null {
+    return authStore.getSelf
   }
 
-  set domainName(value: string) {
-    authStore.setDomainName(value)
+  get code(): string | undefined {
+    const code = this.$route.query.code
+    if (typeof code === 'string') {
+      return code
+    }
   }
 
-  doLogin(): void {
-    authStore.doLogin()
+  get users(): User[] {
+    return filterStore.allUsers
   }
 
-  created() {
-    console.log(process.env.CLIENT_ID)
+  created(): void {
+    this.$route.meta.title = 'Dashboard'
+  }
+
+  mounted(): void {
+    this.$router.push({ query: { code: undefined } })
   }
 }
 </script>
-
-<style lang="scss">
-.arrow-down {
-  .c {
-    stroke: red;
-  }
-}
-</style>
