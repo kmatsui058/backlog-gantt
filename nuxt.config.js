@@ -33,6 +33,8 @@ export default {
     { src: '~/plugins/initializer', ssr: false },
     '@/plugins/v-tooltip.ts',
     { src: '~/plugins/vue-thin-modal', ssr: false },
+    { src: '~/plugins/v-calendar', ssr: false },
+
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
