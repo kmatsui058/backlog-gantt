@@ -2,6 +2,7 @@
   <div class="filter-area">
     <div class="wrapper">
       <MemberFilterButton class="wrapper__item"></MemberFilterButton>
+      <ProjectFilterButton class="wrapper__item"></ProjectFilterButton>
     </div>
   </div>
 </template>
@@ -9,7 +10,9 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import MemberFilterButton from '@/components/filter/MemberFilterButton.vue'
-@Component({ components: { MemberFilterButton } })
+import ProjectFilterButton from '@/components/filter/ProjectFilterButton.vue'
+
+@Component({ components: { MemberFilterButton, ProjectFilterButton } })
 export default class FilterArea extends Vue {}
 </script>
 

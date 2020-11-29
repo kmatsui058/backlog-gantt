@@ -5,13 +5,13 @@
       <div class="help"></div>
       <client-only>
         <div v-if="initLoading" class="loading">-</div>
-        <v-popover v-else-if="userName">
-          <button class="user">
+        <v-popover v-else-if="userName" trigger="click hover focus">
+          <div class="user">
             <div class="user__image">
               <img v-if="userImage" :src="userImage" alt="" />
             </div>
             <div class="user__name">{{ userName }}</div>
-          </button>
+          </div>
           <button slot="popover" class="popup" @click="doLogout">Logout</button>
         </v-popover>
         <v-popover v-else>
@@ -87,6 +87,7 @@ $h: 84px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  cursor: pointer;
   &__image {
     margin-right: 15px;
     img {
