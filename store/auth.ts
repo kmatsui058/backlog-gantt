@@ -27,7 +27,7 @@ export default class AuthModule extends VuexModule {
   private loading: boolean = true
 
   get getBacklogDomain(): string {
-    return this.backlogDomain
+    return this.backlogDomain.replace(/\/$/, '')
   }
 
   get getAccessToken(): string | null {
@@ -48,8 +48,8 @@ export default class AuthModule extends VuexModule {
 
   @Mutation
   setBacklogDomain(value: string): void {
-    this.backlogDomain = value
-    $apiConfig.basePath = this.backlogDomain
+    this.backlogDomain = value.replace(/\/$/, '')
+    $apiConfig.basePath = this.backlogDomain.replace(/\/$/, '')
   }
 
   @Mutation
