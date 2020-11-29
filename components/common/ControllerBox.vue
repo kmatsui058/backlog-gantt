@@ -33,7 +33,7 @@ export default class ControllerBox extends Vue {
   border-radius: 10px;
   padding: 9px 20px;
   min-height: 66px;
-  display: inline-block;
+  display: block;
   min-width: 172px;
   text-align: left;
   vertical-align: baseline;

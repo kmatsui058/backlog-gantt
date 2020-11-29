@@ -36,6 +36,7 @@ export default class FilterArea extends Vue {}
   padding: 0 #{$side-space-normal - $gap/2}px;
   &__item {
     margin: #{$gap/2}px;
+    flex-grow: 1;
   }
 }
 </style>

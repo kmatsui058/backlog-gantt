@@ -1,16 +1,19 @@
 <template>
   <div class="container">
     <FilterArea></FilterArea>
+    <GanttView />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import FilterArea from '@/components/filter/FilterArea.vue'
+import GanttView from '@/components/gantt/GanttView.vue'
+
 import { authStore, filterStore } from '@/store'
 import { User } from '@/store/filter'
 import { UserData } from '~/api'
-@Component({ components: { FilterArea } })
+@Component({ components: { FilterArea, GanttView } })
 export default class IndexComponent extends Vue {
   get self(): UserData | null {
     return authStore.getSelf
