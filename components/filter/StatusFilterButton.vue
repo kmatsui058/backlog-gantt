@@ -55,7 +55,8 @@ export default class StatusFilterButton extends Vue {
     }
     const testIndex = this.statusFilter.findIndex((status) => status === value)
     if (testIndex !== -1) {
-      const result = [...this.statusFilter].splice(testIndex, 1)
+      const result = [...this.statusFilter]
+      result.splice(testIndex, 1)
       filterStore.setStatusFilter(result)
     } else {
       const result = [...this.statusFilter]
