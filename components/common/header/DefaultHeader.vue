@@ -5,20 +5,28 @@
       <div class="help"></div>
       <client-only>
         <div v-if="initLoading" class="loading">-</div>
-        <v-popover v-else-if="userName" trigger="click hover focus">
+        <v-popover v-else-if="userName">
           <div class="user">
             <div class="user__image">
               <img v-if="userImage" :src="userImage" alt="" />
             </div>
             <div class="user__name">{{ userName }}</div>
           </div>
-          <button slot="popover" class="popup" @click="doLogout">Logout</button>
+          <div slot="popover" class="popup logged-in">
+            <button @click="doLogout">Logout</button>
+            <button @click="reflesh">Reflesh</button>
+          </div>
         </v-popover>
         <v-popover v-else>
           <button class="login">Login</button>
           <form slot="popover" class="login__form" @submit.prevent="doLogin">
-            <input v-model="domain" type="text" />
-            <button @click="doLogin">login</button>
+            <p>Backlog Space URL</p>
+            <input
+              v-model="domain"
+              type="text"
+              placeholder="https://xxx.backlog.jp/"
+            />
+            <button class="login__submit" @click="doLogin"><Login /></button>
           </form>
         </v-popover>
       </client-only>
@@ -28,9 +36,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { authStore } from '~/store'
-
-@Component
+import Login from '@/assets/images/icons/log-in.svg?inline'
+import { authStore, filterStore, ganttStore } from '~/store'
+@Component({ components: { Login } })
 export default class DefaultHeader extends Vue {
   get title(): string {
     return this.$route.meta.title
@@ -62,6 +70,13 @@ export default class DefaultHeader extends Vue {
 
   doLogin(): void {
     authStore.doOAuth()
+  }
+
+  async reflesh(): Promise<void> {
+    ganttStore.setTask(null)
+    await authStore.fetchSelf()
+    await filterStore.fetchProjects()
+    await ganttStore.fetchGantt()
   }
 }
 </script>
@@ -102,7 +117,21 @@ $h: 84px;
 .login {
   font-size: 13px;
   color: $c-white;
+  &__submit:hover {
+    color: $c-sky;
+  }
 }
+.logged-in {
+  display: flex;
+  flex-direction: column;
+  > * {
+    padding: 10px 5px;
+    &:hover {
+      color: $c-sky;
+    }
+  }
+}
+
 button {
   @include button-reset;
 }

@@ -7,7 +7,10 @@
       trigger="hover focus"
       offset="10px"
     >
-      <img :src="icon.path" :alt="icon.text" class="icon" />
+      <img v-if="icon.path" :src="icon.path" :alt="icon.text" class="icon" />
+      <span v-else class="icon icon--text">{{
+        icon.text && icon.text[0].toUpperCase() + icon.text[1]
+      }}</span>
       <div slot="popover" class="popup">{{ icon.text }}</div>
     </v-popover>
 
@@ -35,6 +38,10 @@ export default class IconSelector extends Vue {
     @content;
   }
 }
+.icon-selector {
+  display: flex;
+  align-items: center;
+}
 .item {
   display: inline-block;
   &:not(:first-child) {
@@ -50,5 +57,14 @@ export default class IconSelector extends Vue {
   height: 30px;
   object-fit: cover;
   border-radius: 50%;
+  &--text {
+    border: 1px solid $c-navy;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    background-color: #fff;
+    font-size: 13px;
+  }
 }
 </style>

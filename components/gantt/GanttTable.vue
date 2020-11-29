@@ -1,12 +1,14 @@
 <template>
   <div class="gantt-table">
-    <div class="wrapper">
-      <GanttTableLabel v-if="group.label" :label="group.label" />
-      <div class="table-body">
-        <GanttTableLeft :tasks="group.tasks" />
-        <GanttTableRight :tasks="group.tasks" class="table-right" />
+    <client-only>
+      <div class="wrapper">
+        <GanttTableLabel v-if="group.label" :label="group.label" />
+        <div class="table-body">
+          <GanttTableLeft :tasks="group.tasks" />
+          <GanttTableRight :tasks="group.tasks" class="table-right" />
+        </div>
       </div>
-    </div>
+    </client-only>
   </div>
 </template>
 

@@ -1,7 +1,17 @@
 <template>
   <div class="gantt-table-left">
-    <div class="wrapper">
-      <div class="head"></div>
+    <div class="wrapper" :class="{ 'is-shrink': !isExpand }">
+      <div class="head">
+        <button
+          v-if="isExpand"
+          class="shrink head__button"
+          @click="isExpand = false"
+        >
+          &lt; shrink</button
+        ><button v-else class="head__button expand" @click="isExpand = true">
+          &gt;
+        </button>
+      </div>
       <div class="row title">件名</div>
       <a
         v-for="task in tasks"
@@ -25,6 +35,7 @@ import { authStore } from '~/store'
 })
 export default class GantttableLeft extends Vue {
   @Prop({ type: Array, required: true }) readonly tasks!: Task[]
+  isExpand = true
   get basePath(): string {
     return authStore.getBacklogDomain
   }
@@ -34,10 +45,18 @@ export default class GantttableLeft extends Vue {
 .wrapper {
   width: 400px;
   white-space: nowrap;
+  &.is-shrink {
+    width: 20px;
+  }
 }
 .head {
   height: $table-head-height;
   border-bottom: 1px solid $c-navy;
+  &__button {
+    padding: 7px;
+    font-size: 11px;
+    color: $c-gray;
+  }
 }
 .row {
   overflow: hidden;
