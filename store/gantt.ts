@@ -43,7 +43,7 @@ export default class GanttModule extends VuexModule {
     if (this.period) {
       this.end = addPeriod(dayjs(this.start), this.period).toISOString()
     } else {
-      this.end = dayjs(this.start).add(diff, 'day').toISOString()
+      this.end = dayjs(this.start).add(-diff, 'day').toISOString()
     }
   }
 
