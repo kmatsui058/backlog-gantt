@@ -3,9 +3,15 @@
     <div class="wrapper">
       <div class="head"></div>
       <div class="row title">件名</div>
-      <div v-for="task in tasks" :key="task.id" class="row">
+      <a
+        v-for="task in tasks"
+        :key="task.id"
+        class="row"
+        :href="`${basePath}/view/${task.issueKey}`"
+        target="_blank"
+      >
         {{ task.summary }}
-      </div>
+      </a>
     </div>
   </div>
 </template>
@@ -13,11 +19,15 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
 import { Task } from '~/api'
+import { authStore } from '~/store'
 @Component({
   components: {},
 })
 export default class GantttableLeft extends Vue {
   @Prop({ type: Array, required: true }) readonly tasks!: Task[]
+  get basePath(): string {
+    return authStore.getBacklogDomain
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -36,9 +46,13 @@ export default class GantttableLeft extends Vue {
   text-overflow: ellipsis;
   border-bottom: 1px solid $c-navy;
   font-size: 12px;
+  display: block;
+  text-decoration: none;
+  color: $c-navy;
+
   &.title {
     font-size: 12px;
-    color: $c-gray;
+    text-decoration: none;
   }
 }
 </style>

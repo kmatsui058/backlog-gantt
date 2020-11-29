@@ -23,7 +23,17 @@
       </div>
       <div class="head"></div>
       <div class="row title"></div>
-      <div v-for="task in tasks" :key="task.id" class="row"></div>
+      <div v-for="taskRect in taskRects" :key="taskRect.task.id" class="row">
+        <a
+          class="task"
+          :style="taskRect.style"
+          :href="taskRect.href"
+          target="_blank"
+        >
+          <div class="task__bg" :style="taskRect.bgStyle"></div>
+          <span class="task__text">{{ taskRect.title }}</span>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -34,10 +44,17 @@ import ArrowLeft from '@/assets/images/icons/arrow-left.svg?inline'
 import dayjs, { Dayjs } from 'dayjs'
 import * as holidayJp from '@holiday-jp/holiday_jp'
 import { Task } from '~/api'
-import { dateStore } from '~/store'
+import { authStore, dateStore } from '~/store'
 interface Month {
   style: string
   month: string
+}
+interface TaskRect {
+  style: string
+  bgStyle: string
+  title: string
+  task: Task
+  href: string
 }
 @Component({
   components: { ArrowLeft },
@@ -45,8 +62,16 @@ interface Month {
 export default class GantttableLeft extends Vue {
   @Prop({ type: Array, required: true }) readonly tasks!: Task[]
 
+  get tableColWidth(): number {
+    return 20
+  }
+
+  get tableHeadHeight(): number {
+    return 30
+  }
+
   get wrapperStyle(): string {
-    return `width: ${this.days.length * 20}px;`
+    return `width: ${this.days.length * this.tableColWidth}px;`
   }
 
   get startDate(): Dayjs {
@@ -73,15 +98,52 @@ export default class GantttableLeft extends Vue {
       const day = this.startDate.add(i, 'month')
       const width =
         this.days.filter((testDay) => testDay.month() === day.month()).length *
-        20
+        this.tableColWidth
       const left =
-        this.days.findIndex((testDay) => testDay.month() === day.month()) * 20
+        this.days.findIndex((testDay) => testDay.month() === day.month()) *
+        this.tableColWidth
       result.push({
         month: day.format('YYYY/MM'),
         style: `width: ${width}px;left: ${left}`,
       })
     }
     return result
+  }
+
+  get taskRects(): TaskRect[] {
+    return this.tasks.map((task) => {
+      const opacity = !task.startDate || !task.dueDate ? 0 : 0.4
+      const taskStartDate = dayjs(task.startDate || '')
+      const taskDueDate = dayjs(task.dueDate || '')
+      const leftEdge = taskStartDate.isBefore(this.startDate)
+        ? this.startDate
+        : taskStartDate
+      console.log({ leftEdge })
+      const rightEdge = taskDueDate.isBefore(this.endDate)
+        ? taskDueDate
+        : this.endDate
+      console.log({ rightEdge })
+
+      const leftPosition =
+        this.days.findIndex(
+          (testDay) =>
+            testDay.format('YYYY/MM/DD') === leftEdge.format('YYYY/MM/DD')
+        ) * this.tableColWidth
+      const rightPosition =
+        this.days.findIndex(
+          (testDay) =>
+            testDay.format('YYYY/MM/DD') === rightEdge.format('YYYY/MM/DD')
+        ) * this.tableColWidth
+      return {
+        style: `left: ${leftPosition}px;width: ${
+          rightPosition - leftPosition + this.tableColWidth
+        }px;`,
+        bgStyle: `background-color:${task.status.color};opacity: ${opacity};`,
+        title: task.summary,
+        task,
+        href: `${authStore.getBacklogDomain}/view/${task.issueKey}`,
+      }
+    })
   }
 
   classByDate(day: Dayjs): string[] {
@@ -123,11 +185,12 @@ export default class GantttableLeft extends Vue {
   padding-top: #{$table-head-height-normal - 10}px;
   color: $c-gray;
   flex-shrink: 0;
-  &.today {
-    background-color: rgba(248, 128, 128, 0.404);
-  }
+
   &.weekday {
-    background-color: rgba(146, 146, 146, 0.5);
+    background-color: rgba(216, 216, 216, 0.5);
+  }
+  &.today {
+    background-color: rgba(255, 184, 184, 0.404);
   }
 }
 .month {
@@ -148,9 +211,31 @@ export default class GantttableLeft extends Vue {
   text-overflow: ellipsis;
   border-bottom: 1px solid $c-navy;
   font-size: 12px;
+  position: relative;
   &.title {
     font-size: 12px;
     color: $c-gray;
+  }
+}
+.task {
+  position: relative;
+  display: block;
+  padding: 0 5px;
+  text-decoration: none;
+  &:hover {
+    opacity: 0.8;
+  }
+  &__bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+  }
+  &__text {
+    position: relative;
+    color: #000;
   }
 }
 </style>
