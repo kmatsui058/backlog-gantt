@@ -1,9 +1,9 @@
 <template>
   <div class="gantt-period-setter">
     <div class="wrapper">
-      <GanttStartSetter />
       <StepController />
-      <RangePicker />
+      <GanttStartSetter class="start" />
+      <RangePicker class="range" />
       <SwitchPeriod />
     </div>
   </div>
@@ -21,3 +21,20 @@ import SwitchPeriod from '@/components/gantt/SwitchPeriod.vue'
 })
 export default class GanttPeriodSetter extends Vue {}
 </script>
+<style lang="scss" scoped>
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  > * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+.start {
+  margin-left: 20px;
+}
+.range {
+  flex-grow: 1;
+}
+</style>
