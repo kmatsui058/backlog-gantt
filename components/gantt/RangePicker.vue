@@ -8,7 +8,11 @@
     >
       <template v-slot="{ inputEvents }">
         <button class="" v-on="inputEvents.start">
-          {{ startDateFormetted }} - {{ endDateFormetted }}
+          {{ startDateFormetted }}
+        </button>
+        -
+        <button class="" v-on="inputEvents.end">
+          {{ endDateFormetted }}
         </button>
       </template>
     </v-date-picker>
