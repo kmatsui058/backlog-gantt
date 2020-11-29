@@ -1,25 +1,26 @@
 <template>
   <div class="status-filter-button">
-    <ControllerBox
-      title="Status"
-      help="ガントをグルーピング表示させます"
-      :auto-hide="true"
-    >
-      <v-popover trigger="click" offset="20px">
-        <div class="value">{{ Status }}</div>
-
-        <div slot="popover" class="popup">
-          <button
-            v-for="(option, key) in options"
-            :key="key"
-            v-close-popover
-            class="popup__option"
-            @click="submit(option)"
-          >
-            {{ option }}
-          </button>
-        </div>
-      </v-popover>
+    <ControllerBox title="Status" :wrappable="true">
+      <RoundButton
+        text="すべて"
+        :checked="statusFilter === 'all'"
+        class="item"
+        @click="onClickStaticItem('all')"
+      />
+      <RoundButton
+        v-for="(status, key) in statuses"
+        :key="key"
+        :text="status"
+        :checked="statusFilter.includes(status)"
+        class="item"
+        @click="onClickFetchedItem(status)"
+      />
+      <RoundButton
+        text="完了以外"
+        :checked="statusFilter === 'without-complete'"
+        class="item"
+        @click="onClickStaticItem('without-complete')"
+      />
     </ControllerBox>
   </div>
 </template>
@@ -28,20 +29,37 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import ControllerBox from '@/components/common/ControllerBox.vue'
 import IconSelector from '@/components/common/IconSelector.vue'
+import RoundButton from '@/components/common/RoundButton.vue'
 import { filterStore } from '~/store'
-
-@Component({ components: { ControllerBox, IconSelector } })
+import { StatusFilter } from '~/store/filter'
+@Component({ components: { ControllerBox, IconSelector, RoundButton } })
 export default class StatusFilterButton extends Vue {
-  get Status(): Status {
-    return filterStore.getStatus
+  get statuses(): string[] {
+    return filterStore.allStatusNames
   }
 
-  get options(): Status[] {
-    return ['none', 'member', 'project']
+  get statusFilter(): StatusFilter {
+    return filterStore.getStatusFilter
   }
 
-  submit(value: Status): void {
-    filterStore.setStatus(value)
+  onClickStaticItem(value: 'all' | 'without-complete'): void {
+    filterStore.setStatusFilter(value)
+  }
+
+  onClickFetchedItem(value: string): void {
+    if (typeof this.statusFilter === 'string') {
+      filterStore.setStatusFilter([value])
+      return
+    }
+    const testIndex = this.statusFilter.findIndex((status) => status === value)
+    if (testIndex !== -1) {
+      const result = [...this.statusFilter].splice(testIndex, 1)
+      filterStore.setStatusFilter(result)
+    } else {
+      const result = [...this.statusFilter]
+      result.push(value)
+      filterStore.setStatusFilter(result)
+    }
   }
 }
 </script>
@@ -54,19 +72,7 @@ export default class StatusFilterButton extends Vue {
     opacity: 0.2;
   }
 }
-.popup {
-  padding: 0;
-  &__option {
-    text-align: center;
-    display: block;
-    width: 100%;
-    line-height: 2.5;
-    &:hover {
-      color: $c-sky;
-    }
-    &:not(:last-child) {
-      border-bottom: 1px solid $c-navy;
-    }
-  }
+.item {
+  margin: 5px;
 }
 </style>
