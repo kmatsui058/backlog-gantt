@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
+import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
 import dayjs, { Dayjs } from 'dayjs'
 export type Period = 'month' | '2month' | 'quarter' | 'half'
 export function addPeriod(start: Dayjs, period: Period): Dayjs {
@@ -60,4 +60,7 @@ export default class GanttModule extends VuexModule {
       this.end = addPeriod(dayjs(this.start), this.period).toISOString()
     }
   }
+
+  @Action
+  fetchGantt(): void {}
 }
