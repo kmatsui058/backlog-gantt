@@ -27,7 +27,7 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import dayjs, { Dayjs } from 'dayjs'
 import CalendarIcon from '@/assets/images/icons/calendar.svg?inline'
-import { dateStore } from '~/store'
+import { dateStore, ganttStore } from '~/store'
 
 @Component({
   components: { CalendarIcon },
@@ -57,7 +57,7 @@ export default class RangePicker extends Vue {
   onInput(date: { start: Date; end: Date }): void {
     dateStore.setStart(dayjs(date.start).toISOString())
     dateStore.setEnd(dayjs(date.end).toISOString())
-    dateStore.fetchGantt()
+    ganttStore.fetchGantt()
   }
 
   @Watch('startDate', { immediate: true })

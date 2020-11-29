@@ -135,6 +135,38 @@ export default class AuthModule extends VuexModule {
     return result
   }
 
+  get getSelectedStatus(): number[] | undefined {
+    if (this.statusFilter === 'all') return undefined
+    const result: number[] = []
+    const projects = this.filteredProjects.length
+      ? this.filteredProjects
+      : this.projects
+
+    if (this.statusFilter === 'without-complete') {
+      projects.forEach((project) => {
+        project.statuses.forEach((status) => {
+          if (!result.includes(status.id)) {
+            if (status.name !== '完了') {
+              result.push(status.id)
+            }
+          }
+        })
+      })
+    } else {
+      this.projects.forEach((project) => {
+        project.statuses.forEach((status) => {
+          if (!result.includes(status.id)) {
+            if (this.statusFilter.includes(status.name)) {
+              result.push(status.id)
+            }
+          }
+        })
+      })
+    }
+
+    return result
+  }
+
   @Mutation
   setProjects(value: Project[]): void {
     this.projects = value
