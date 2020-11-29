@@ -7,13 +7,17 @@
       @input="onInput"
     >
       <template v-slot="{ inputEvents }">
-        <button class="" v-on="inputEvents.start">
-          {{ startDateFormetted }}
-        </button>
-        -
-        <button class="" v-on="inputEvents.end">
-          {{ endDateFormetted }}
-        </button>
+        <div class="wrapper">
+          <button class="button" v-on="inputEvents.start">
+            {{ startDateFormetted }}
+            <CalendarIcon width="10" height="10" class="icon" />
+          </button>
+          -
+          <button class="button" v-on="inputEvents.end">
+            {{ endDateFormetted }}
+            <CalendarIcon width="10" height="10" class="icon" />
+          </button>
+        </div>
       </template>
     </v-date-picker>
   </div>
@@ -22,9 +26,11 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import dayjs, { Dayjs } from 'dayjs'
+import CalendarIcon from '@/assets/images/icons/calendar.svg?inline'
 import { ganttStore } from '~/store'
+
 @Component({
-  components: {},
+  components: { CalendarIcon },
 })
 export default class RangePicker extends Vue {
   range = {
@@ -65,3 +71,17 @@ export default class RangePicker extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.range-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: $c-navy;
+  padding: 0 20px;
+}
+.button {
+  font-weight: bold;
+}
+</style>
