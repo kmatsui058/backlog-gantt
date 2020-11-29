@@ -20,6 +20,127 @@ import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
 
 /**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface Attachment
+ */
+export interface Attachment {
+    [key: string]: object | any;
+
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Attachment
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Attachment
+     */
+    name: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Attachment
+     */
+    size: number;
+}
+/**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface IssueType
+ */
+export interface IssueType {
+    [key: string]: object | any;
+
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof IssueType
+     */
+    color: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof IssueType
+     */
+    displayOrder: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof IssueType
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof IssueType
+     */
+    name: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof IssueType
+     */
+    projectId: number;
+}
+/**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface Milestone
+ */
+export interface Milestone {
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {boolean}
+     * @memberof Milestone
+     */
+    archived: boolean;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Milestone
+     */
+    description: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Milestone
+     */
+    displayOrder: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Milestone
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Milestone
+     */
+    name: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Milestone
+     */
+    projectId: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {AnyType}
+     * @memberof Milestone
+     */
+    releaseDueDate: AnyType | null;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {AnyType}
+     * @memberof Milestone
+     */
+    startDate: AnyType | null;
+}
+/**
  * 
  * @export
  * @interface Oauth2TokenCodeRequest
@@ -190,6 +311,27 @@ export interface Oauth2TokenRequestResponse {
     refresh_token?: string;
 }
 /**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface Priority
+ */
+export interface Priority {
+    [key: string]: object | any;
+
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Priority
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Priority
+     */
+    name: string;
+}
+/**
  * プロジェクト一覧
  * @export
  * @interface ProjectItem
@@ -245,6 +387,114 @@ export interface ProjectItem {
     textFormattingRule: string;
 }
 /**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface SharedFile
+ */
+export interface SharedFile {
+    [key: string]: object | any;
+
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof SharedFile
+     */
+    created: string;
+    /**
+     * 
+     * @type {UserData}
+     * @memberof SharedFile
+     */
+    createdUser: UserData;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof SharedFile
+     */
+    dir: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof SharedFile
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof SharedFile
+     */
+    name: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof SharedFile
+     */
+    size: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof SharedFile
+     */
+    type: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof SharedFile
+     */
+    updated: string;
+    /**
+     * 
+     * @type {UserData}
+     * @memberof SharedFile
+     */
+    updatedUser: UserData;
+}
+/**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface Star
+ */
+export interface Star {
+    [key: string]: object | any;
+
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {AnyType}
+     * @memberof Star
+     */
+    comment: AnyType | null;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Star
+     */
+    created: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Star
+     */
+    id: number;
+    /**
+     * 
+     * @type {UserData}
+     * @memberof Star
+     */
+    presenter: UserData;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Star
+     */
+    title: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Star
+     */
+    url: string;
+}
+/**
  * 課題に設定できる状態
  * @export
  * @interface Status
@@ -280,6 +530,175 @@ export interface Status {
      * @memberof Status
      */
     projectId: number;
+}
+/**
+ * An explanation about the purpose of this instance.
+ * @export
+ * @interface Task
+ */
+export interface Task {
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {AnyType}
+     * @memberof Task
+     */
+    actualHours: AnyType | null;
+    /**
+     * 
+     * @type {UserData}
+     * @memberof Task
+     */
+    assignee: UserData;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<Attachment>}
+     * @memberof Task
+     */
+    attachments: Array<Attachment>;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<string>}
+     * @memberof Task
+     */
+    category: Array<string>;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    created: string;
+    /**
+     * 
+     * @type {UserData}
+     * @memberof Task
+     */
+    createdUser: UserData;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<string>}
+     * @memberof Task
+     */
+    customFields: Array<string>;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    description: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    dueDate: string | null;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Task
+     */
+    estimatedHours: number | null;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Task
+     */
+    id: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    issueKey: string;
+    /**
+     * 
+     * @type {IssueType}
+     * @memberof Task
+     */
+    issueType: IssueType;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Task
+     */
+    keyId: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<Milestone>}
+     * @memberof Task
+     */
+    milestone: Array<Milestone>;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {AnyType}
+     * @memberof Task
+     */
+    parentIssueId: AnyType | null;
+    /**
+     * 
+     * @type {Priority}
+     * @memberof Task
+     */
+    priority: Priority;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {number}
+     * @memberof Task
+     */
+    projectId: number;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    resolutions: string | null;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<SharedFile>}
+     * @memberof Task
+     */
+    sharedFiles: Array<SharedFile>;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<Star>}
+     * @memberof Task
+     */
+    stars: Array<Star>;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    startDate: string | null;
+    /**
+     * 
+     * @type {Status}
+     * @memberof Task
+     */
+    status: Status;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    summary: string;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {string}
+     * @memberof Task
+     */
+    updated: string;
+    /**
+     * 
+     * @type {UserData}
+     * @memberof Task
+     */
+    updatedUser: UserData;
+    /**
+     * An explanation about the purpose of this instance.
+     * @type {Array<string>}
+     * @memberof Task
+     */
+    versions: Array<string>;
 }
 /**
  * The root schema comprises the entire JSON document.
@@ -324,7 +743,7 @@ export interface UserData {
      * @type {string}
      * @memberof UserData
      */
-    userId: string;
+    userId?: string;
 }
 
 /**
@@ -333,6 +752,99 @@ export interface UserData {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @summary 課題一覧の取得
+         * @param {Array<number>} [projectId] プロジェクトのID
+         * @param {Array<number>} [statusId] 状態のID
+         * @param {Array<number>} [assigneeId] 担当者のID
+         * @param {number} [count] 取得上限(1-100) 指定が無い場合は20
+         * @param {string} [startDateSince] 開始日 (yyyy-MM-dd)
+         * @param {string} [startDateUntil] 開始日 (yyyy-MM-dd)
+         * @param {string} [dueDateSince] 期限日 (yyyy-MM-dd)
+         * @param {string} [dueDateUntil] 期限日 (yyyy-MM-dd)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV2IssuesGet: async (projectId?: Array<number>, statusId?: Array<number>, assigneeId?: Array<number>, count?: number, startDateSince?: string, startDateUntil?: string, dueDateSince?: string, dueDateUntil?: string, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v2/issues`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearerAuth required
+            // http bearer authentication required
+            if (configuration && configuration.accessToken) {
+                const accessToken = typeof configuration.accessToken === 'function'
+                    ? await configuration.accessToken()
+                    : await configuration.accessToken;
+                localVarHeaderParameter["Authorization"] = "Bearer " + accessToken;
+            }
+
+            if (projectId) {
+                localVarQueryParameter['projectId'] = projectId;
+            }
+
+            if (statusId) {
+                localVarQueryParameter['statusId'] = statusId;
+            }
+
+            if (assigneeId) {
+                localVarQueryParameter['assigneeId'] = assigneeId;
+            }
+
+            if (count !== undefined) {
+                localVarQueryParameter['count'] = count;
+            }
+
+            if (startDateSince !== undefined) {
+                localVarQueryParameter['startDateSince'] = (startDateSince as any instanceof Date) ?
+                    (startDateSince as any).toISOString().substr(0,10) :
+                    startDateSince;
+            }
+
+            if (startDateUntil !== undefined) {
+                localVarQueryParameter['startDateUntil'] = (startDateUntil as any instanceof Date) ?
+                    (startDateUntil as any).toISOString().substr(0,10) :
+                    startDateUntil;
+            }
+
+            if (dueDateSince !== undefined) {
+                localVarQueryParameter['dueDateSince'] = (dueDateSince as any instanceof Date) ?
+                    (dueDateSince as any).toISOString().substr(0,10) :
+                    dueDateSince;
+            }
+
+            if (dueDateUntil !== undefined) {
+                localVarQueryParameter['dueDateUntil'] = (dueDateUntil as any instanceof Date) ?
+                    (dueDateUntil as any).toISOString().substr(0,10) :
+                    dueDateUntil;
+            }
+
+
+    
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.query) {
+                query.set(key, options.query[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @summary アクセストークンリクエスト
@@ -807,6 +1319,27 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary 課題一覧の取得
+         * @param {Array<number>} [projectId] プロジェクトのID
+         * @param {Array<number>} [statusId] 状態のID
+         * @param {Array<number>} [assigneeId] 担当者のID
+         * @param {number} [count] 取得上限(1-100) 指定が無い場合は20
+         * @param {string} [startDateSince] 開始日 (yyyy-MM-dd)
+         * @param {string} [startDateUntil] 開始日 (yyyy-MM-dd)
+         * @param {string} [dueDateSince] 期限日 (yyyy-MM-dd)
+         * @param {string} [dueDateUntil] 期限日 (yyyy-MM-dd)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV2IssuesGet(projectId?: Array<number>, statusId?: Array<number>, assigneeId?: Array<number>, count?: number, startDateSince?: string, startDateUntil?: string, dueDateSince?: string, dueDateUntil?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Task>>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).apiV2IssuesGet(projectId, statusId, assigneeId, count, startDateSince, startDateUntil, dueDateSince, dueDateUntil, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @summary アクセストークンリクエスト
          * @param {string} grantType 
          * @param {string} clientId 
@@ -935,6 +1468,23 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @summary 課題一覧の取得
+         * @param {Array<number>} [projectId] プロジェクトのID
+         * @param {Array<number>} [statusId] 状態のID
+         * @param {Array<number>} [assigneeId] 担当者のID
+         * @param {number} [count] 取得上限(1-100) 指定が無い場合は20
+         * @param {string} [startDateSince] 開始日 (yyyy-MM-dd)
+         * @param {string} [startDateUntil] 開始日 (yyyy-MM-dd)
+         * @param {string} [dueDateSince] 期限日 (yyyy-MM-dd)
+         * @param {string} [dueDateUntil] 期限日 (yyyy-MM-dd)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV2IssuesGet(projectId?: Array<number>, statusId?: Array<number>, assigneeId?: Array<number>, count?: number, startDateSince?: string, startDateUntil?: string, dueDateSince?: string, dueDateUntil?: string, options?: any): AxiosPromise<Array<Task>> {
+            return DefaultApiFp(configuration).apiV2IssuesGet(projectId, statusId, assigneeId, count, startDateSince, startDateUntil, dueDateSince, dueDateUntil, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary アクセストークンリクエスト
          * @param {string} grantType 
          * @param {string} clientId 
@@ -1030,6 +1580,25 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @summary 課題一覧の取得
+     * @param {Array<number>} [projectId] プロジェクトのID
+     * @param {Array<number>} [statusId] 状態のID
+     * @param {Array<number>} [assigneeId] 担当者のID
+     * @param {number} [count] 取得上限(1-100) 指定が無い場合は20
+     * @param {string} [startDateSince] 開始日 (yyyy-MM-dd)
+     * @param {string} [startDateUntil] 開始日 (yyyy-MM-dd)
+     * @param {string} [dueDateSince] 期限日 (yyyy-MM-dd)
+     * @param {string} [dueDateUntil] 期限日 (yyyy-MM-dd)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public apiV2IssuesGet(projectId?: Array<number>, statusId?: Array<number>, assigneeId?: Array<number>, count?: number, startDateSince?: string, startDateUntil?: string, dueDateSince?: string, dueDateUntil?: string, options?: any) {
+        return DefaultApiFp(this.configuration).apiV2IssuesGet(projectId, statusId, assigneeId, count, startDateSince, startDateUntil, dueDateSince, dueDateUntil, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary アクセストークンリクエスト
