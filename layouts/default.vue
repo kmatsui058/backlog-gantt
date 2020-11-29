@@ -4,12 +4,18 @@
       <default-header />
     </header>
     <main><Nuxt /></main>
+    <client-only>
+      <modal name="member-filter">
+        <MemberFilter />
+      </modal>
+    </client-only>
   </div>
 </template>
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import DefaultHeader from '@/components/common/header/DefaultHeader.vue'
-@Component({ components: { DefaultHeader } })
+import MemberFilter from '@/components/filter/MemberFilter.vue'
+@Component({ components: { DefaultHeader, MemberFilter } })
 export default class DefaultLayout extends Vue {
   get title(): string {
     return this.$route.meta.title

@@ -5,4 +5,5 @@ $c-sky: #11CDEF;
 $c-purple: #7764E4;
 $c-gray: #8898AA;
 
-$side-space: 38px;
+$side-space-normal: 38;
+$side-space: #{$side-space-normal}px;

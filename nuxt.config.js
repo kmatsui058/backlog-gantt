@@ -32,6 +32,7 @@ export default {
     '@/plugins/api-accessor.ts',
     { src: '~/plugins/initializer', ssr: false },
     '@/plugins/v-tooltip.ts',
+    { src: '~/plugins/vue-thin-modal', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

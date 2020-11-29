@@ -1,7 +1,7 @@
 <template>
   <div class="controller-box">
     <p class="title">{{ title }}</p>
-    <slot />
+    <div class="slot"><slot /></div>
   </div>
 </template>
 
@@ -22,11 +22,22 @@ export default class ControllerBox extends Vue {
   height: 66px;
   display: inline-block;
   min-width: 172px;
+  text-align: left;
+  vertical-align: baseline;
 }
 .title {
   font-size: 11px;
   color: $c-gray;
   margin: 0;
   text-transform: uppercase;
+}
+.slot {
+  height: 30px;
+  color: #4d4f5c;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
 }
 </style>
