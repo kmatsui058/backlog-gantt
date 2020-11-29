@@ -4,7 +4,7 @@
       <GanttTableLabel v-if="group.label" :label="group.label" />
       <div class="table-body">
         <GanttTableLeft :tasks="group.tasks" />
-        <GanttTableRight :tasks="group.tasks" />
+        <GanttTableRight :tasks="group.tasks" class="table-right" />
       </div>
     </div>
   </div>
@@ -28,5 +28,9 @@ export default class Gantttable extends Vue {
 <style lang="scss" scoped>
 .table-body {
   display: flex;
+}
+.table-right {
+  flex-shrink: 1;
+  overflow: scroll;
 }
 </style>
