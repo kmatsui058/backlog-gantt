@@ -8,7 +8,7 @@
       offset="10px"
     >
       <img :src="icon.path" :alt="icon.text" class="icon" />
-      <button slot="popover" class="popup">{{ icon.text }}</button>
+      <div slot="popover" class="popup">{{ icon.text }}</div>
     </v-popover>
 
     <span v-if="icons.length > 5">...</span>

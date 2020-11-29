@@ -25,8 +25,32 @@ async function fetchUserImage(id: number): Promise<string> {
     reader.readAsDataURL(res.data)
   })
 }
+
+async function fetchProjectImage(id: number): Promise<string> {
+  // return await new Promise((resolve) => resolve(id.toFixed()))
+  console.log(`fetchProjectImage ${id}`)
+  const res: AxiosResponse<Blob> | void = await new DefaultApi($apiConfig)
+    .apiV2ProjectsProjectIdOrKeyImageGet(id.toFixed(), {
+      responseType: 'blob',
+    })
+    .catch((err) => console.log(err))
+  console.log(res)
+  if (!res) throw new Error('no res')
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (): void => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result)
+      } else {
+        reject(new TypeError('invalid image type'))
+      }
+    }
+    reader.readAsDataURL(res.data)
+  })
+}
 export interface Project {
   data: ProjectItem
+  image: string
   users: number[]
 }
 
@@ -45,6 +69,7 @@ export default class AuthModule extends VuexModule {
   private users: User[] = []
   private selectedUserId: number[] = []
   private selectedProjectId: number[] = []
+  private loading: boolean = true
 
   get getProjects(): Project[] {
     return this.projects
@@ -80,6 +105,10 @@ export default class AuthModule extends VuexModule {
     )
   }
 
+  get getLoading(): boolean {
+    return this.loading
+  }
+
   @Mutation
   setProjects(value: Project[]): void {
     this.projects = value
@@ -106,8 +135,24 @@ export default class AuthModule extends VuexModule {
     this.selectedProjectId = projectIds
   }
 
+  @Mutation
+  setLoading(value: boolean): void {
+    this.loading = value
+  }
+
+  @Mutation
+  initialize(): void {
+    this.projects = []
+    this.users = []
+    this.selectedUserId = []
+    this.selectedProjectId = []
+  }
+
   @Action
   async fetchProjects(): Promise<void> {
+    this.setLoading(true)
+    this.setProjects([])
+    this.setUsers([])
     const res: AxiosResponse<ProjectItem[]> = await new DefaultApi($apiConfig)
       .apiV2ProjectsGet()
       .catch(async (err: AxiosError) => {
@@ -125,11 +170,18 @@ export default class AuthModule extends VuexModule {
           const users = await this.fetchUsers(project.id).catch((err) =>
             console.log(err)
           )
-          projects.push({ data: project, users: users || [] })
+          const image = await fetchProjectImage(project.id).catch((err) =>
+            console.log(err)
+          )
+          projects.push({
+            data: project,
+            users: users || [],
+            image: image || '',
+          })
         }
       )
     )
-
+    this.setLoading(false)
     this.setProjects(projects)
   }
 

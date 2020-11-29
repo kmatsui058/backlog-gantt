@@ -91,6 +91,7 @@ export default class AuthModule extends VuexModule {
     this.code = null
     this.self = null
     this.selfImage = null
+    filterStore.initialize()
   }
 
   @Action
@@ -151,6 +152,7 @@ export default class AuthModule extends VuexModule {
     this.setLoading(true)
     if (!this.accessToken) {
       Promise.reject(new Error('no access token'))
+      return
     }
     console.log({ $apiConfig })
     const res: AxiosResponse<UserData> = await new DefaultApi($apiConfig)

@@ -1,10 +1,15 @@
 <template>
-  <button @click="$modal.push('member-filter')">
+  <div
+    class="member-filter-button"
+    :class="{ disabled: projectLoading }"
+    @click="onClick"
+  >
     <ControllerBox title="MEMBER">
-      <IconSelector v-if="icons.length" :icons="icons" />
+      <div v-if="projectLoading" class="loading">wait a moment...</div>
+      <IconSelector v-else-if="icons.length" :icons="icons" />
       <div v-else class="no-member">select member...</div>
     </ControllerBox>
-  </button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -20,14 +25,31 @@ export default class MemberFilterButton extends Vue {
     return filterStore.filteredUsers
   }
 
+  get projectLoading(): boolean {
+    return filterStore.getLoading
+  }
+
   get icons(): Icon[] {
     return this.filteredUsers.map((user) => {
       return { path: user.image, text: user.data.name }
     })
   }
+
+  onClick(): void {
+    if (this.projectLoading) return
+    this.$modal.push('member-filter')
+  }
 }
 </script>
 <style lang="scss" scoped>
+.member-filter-button {
+  transition: opacity 0.2s;
+  cursor: pointer;
+  &.disabled {
+    cursor: wait;
+    opacity: 0.2;
+  }
+}
 .no-member {
   height: 1em;
   line-height: 1;

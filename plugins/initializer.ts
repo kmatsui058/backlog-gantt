@@ -20,8 +20,6 @@ const initializer: Plugin = async ({ route, app }) => {
       await authStore.fetchToken()
       if (app.$router) app.$router.push({ query: { code: undefined } })
     }
-  } else {
-    await authStore.fetchSelf()
   }
   authStore.setLoading(false)
 }
