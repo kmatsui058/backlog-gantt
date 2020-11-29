@@ -1,12 +1,16 @@
 <template>
   <div class="icon-selector">
-    <img
+    <v-popover
       v-for="(icon, key) in filteredIcons"
       :key="key"
-      :src="icon.path"
-      :alt="icon.text"
-      class="icon"
-    />
+      class="item"
+      trigger="hover focus"
+      offset="10px"
+    >
+      <img :src="icon.path" :alt="icon.text" class="icon" />
+      <button slot="popover" class="popup">{{ icon.text }}</button>
+    </v-popover>
+
     <span v-if="icons.length > 5">...</span>
   </div>
 </template>
@@ -31,11 +35,8 @@ export default class IconSelector extends Vue {
     @content;
   }
 }
-.icon {
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  border-radius: 50%;
+.item {
+  display: inline-block;
   &:not(:first-child) {
     margin-left: -10px;
     transition: margin-left 0.2s;
@@ -43,5 +44,11 @@ export default class IconSelector extends Vue {
       margin-left: 5px;
     }
   }
+}
+.icon {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 </style>
