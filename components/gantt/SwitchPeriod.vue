@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import ButtonSet, { Button } from '@/components/common/ButtonSet.vue'
-import { ganttStore } from '~/store'
+import { dateStore } from '~/store'
 import { Period } from '~/store/gantt'
 interface StepButton extends Button {
   value: Period
@@ -17,7 +17,7 @@ interface StepButton extends Button {
 })
 export default class SwitchPeriod extends Vue {
   get selectedPeriod(): Period | null {
-    return ganttStore.getPeriod
+    return dateStore.getPeriod
   }
 
   get buttons(): StepButton[] {
@@ -42,8 +42,8 @@ export default class SwitchPeriod extends Vue {
   }
 
   onChange(button: StepButton): void {
-    ganttStore.setPeriod(button.value)
-    ganttStore.fetchGantt()
+    dateStore.setPeriod(button.value)
+    dateStore.fetchGantt()
   }
 }
 </script>
