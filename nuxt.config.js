@@ -22,6 +22,10 @@ export default {
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
   },
+  env: {
+    CLIENT_ID: process.env.CLIENT_ID,
+    CLIENT_SECRET: process.env.CLIENT_SECRET
+  },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: ['@/assets/scss/common.scss'],
@@ -48,6 +52,7 @@ export default {
     // https://go.nuxtjs.dev/stylelint
     '@nuxtjs/stylelint-module',
     '@nuxtjs/style-resources',
+    '@nuxtjs/dotenv'
   ],
   styleResources: {
     // your settings here
