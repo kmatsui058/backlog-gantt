@@ -124,7 +124,24 @@ paths:
                 type: array
                 items:
                   $ref : '#/components/schemas/UserData'
-
+  /api/v2/projects/{projectIdOrKey}/image:
+    get:
+      summary: プロジェクトアイコンの取得
+      parameters:
+        - in: path
+          name: projectIdOrKey
+          required: true
+          schema:
+            type: string
+            example: "1234"
+      responses:
+        "200":
+          description: 成功
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
   /api/v2/users/{userId}/icon:
     get:
       summary: ユーザーのアイコンを取得
