@@ -118,11 +118,9 @@ export default class GantttableLeft extends Vue {
       const leftEdge = taskStartDate.isBefore(this.startDate)
         ? this.startDate
         : taskStartDate
-      console.log({ leftEdge })
       const rightEdge = taskDueDate.isBefore(this.endDate)
         ? taskDueDate
         : this.endDate
-      console.log({ rightEdge })
 
       const leftPosition =
         this.days.findIndex(
