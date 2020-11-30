@@ -6,7 +6,6 @@ const initializer: Plugin = async ({ route, app }) => {
     authStore.setLoading(false)
     return
   }
-  console.log(authStore.getBacklogDomain)
   $apiConfig.basePath = authStore.getBacklogDomain
   const code = typeof route.query.code === 'string' ? route.query.code : null
 

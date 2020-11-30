@@ -106,7 +106,6 @@ export default class AuthModule extends VuexModule {
   async fetchToken(): Promise<void> {
     if (!this.code || !this.clientId || !this.clientSecret)
       throw new Error('no require data')
-    console.log({ $apiConfig })
     const res = await new DefaultApi($apiConfig)
       .apiV2Oauth2TokenPost(
         Oauth2TokenRequestGrantTypeEnum.AuthorizationCode,
@@ -131,7 +130,6 @@ export default class AuthModule extends VuexModule {
   async refresh(): Promise<void> {
     if (!this.clientId || !this.clientSecret || !this.refreshToken)
       throw new Error('no require data@refresh')
-    console.log({ $apiConfig })
     this.setToken(null)
     const res = await new DefaultApi($apiConfig)
       .apiV2Oauth2TokenPost(
@@ -161,7 +159,6 @@ export default class AuthModule extends VuexModule {
       Promise.reject(new Error('no access token'))
       return
     }
-    console.log({ $apiConfig })
     const res: AxiosResponse<UserData> = await new DefaultApi(
       $apiConfig
     ).apiV2UsersMyselfGet()
