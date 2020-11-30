@@ -38,7 +38,7 @@ export default class GanttTableLabel extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   padding: 20px 0;
   text-decoration: none;
