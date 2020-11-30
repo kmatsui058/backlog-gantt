@@ -66,7 +66,13 @@ export default class AuthModule extends VuexModule {
       this.accessToken = null
     }
 
-    if (this.accessToken) $apiConfig.accessToken = this.accessToken
+    if (this.accessToken) {
+      $apiConfig.accessToken = this.accessToken
+      $apiConfig.baseOptions.Authorization = `Bearer ${this.accessToken}`
+    } else {
+      $apiConfig.accessToken = undefined
+      $apiConfig.baseOptions.Authorization = undefined
+    }
   }
 
   @Mutation
