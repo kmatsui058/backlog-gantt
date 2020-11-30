@@ -1,5 +1,5 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import Axios, { AxiosError, AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { $apiConfig } from '@/plugins/api-accessor'
 import {
   DefaultApi,
@@ -125,7 +125,6 @@ export default class AuthModule extends VuexModule {
       return
     }
     this.setToken(res.data)
-    await this.fetchSelf()
   }
 
   @Action
@@ -152,7 +151,6 @@ export default class AuthModule extends VuexModule {
       })
     if (!res) return
     this.setToken(res.data)
-    await this.fetchSelf()
   }
 
   @Action
@@ -164,17 +162,9 @@ export default class AuthModule extends VuexModule {
       return
     }
     console.log({ $apiConfig })
-    const res: AxiosResponse<UserData> = await new DefaultApi($apiConfig)
-      .apiV2UsersMyselfGet()
-      .catch(async (err: AxiosError) => {
-        console.log(err.response)
-        if (err.response && err.response.status === 401) {
-          await this.refresh()
-          return Axios.request(err.config)
-        } else {
-          throw err
-        }
-      })
+    const res: AxiosResponse<UserData> = await new DefaultApi(
+      $apiConfig
+    ).apiV2UsersMyselfGet()
     this.setLoading(false)
     if (!res) return
     this.setSelf(res.data)
@@ -190,19 +180,11 @@ export default class AuthModule extends VuexModule {
 
   @Action
   async fetchUserImage(id: string): Promise<void> {
-    const res: AxiosResponse<Blob> = await new DefaultApi($apiConfig)
-      .apiV2UsersUserIdIconGet(id, {
-        responseType: 'blob',
-      })
-      .catch(async (err: AxiosError) => {
-        console.log(err.response)
-        if (err.response && err.response.status === 401) {
-          await this.refresh()
-          return Axios.request(err.config)
-        } else {
-          throw err
-        }
-      })
+    const res: AxiosResponse<Blob> = await new DefaultApi(
+      $apiConfig
+    ).apiV2UsersUserIdIconGet(id, {
+      responseType: 'blob',
+    })
     const reader = new FileReader()
     reader.onload = (ev): void => {
       const result = ev.target?.result

@@ -13,15 +13,17 @@
         </button>
       </div>
       <div class="row title">件名</div>
-      <a
-        v-for="task in tasks"
-        :key="task.id"
-        class="row"
-        :href="`${basePath}/view/${task.issueKey}`"
-        target="_blank"
-      >
-        {{ task.summary }}
-      </a>
+      <client-only>
+        <a
+          v-for="task in tasks"
+          :key="task.id"
+          class="row"
+          :href="`${basePath}/view/${task.issueKey}`"
+          target="_blank"
+        >
+          {{ task.summary }}
+        </a>
+      </client-only>
     </div>
   </div>
 </template>

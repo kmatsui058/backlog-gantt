@@ -1,8 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import Axios, { AxiosError, AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import { $apiConfig } from '@/plugins/api-accessor'
 import { DefaultApi, UserData, ProjectItem, Status } from '~/api'
-import { authStore } from '~/utils/store-accessor'
 export async function fetchUserImage(id: number): Promise<string> {
   const res: AxiosResponse<Blob> | void = await new DefaultApi($apiConfig)
     .apiV2UsersUserIdIconGet(id.toFixed(), {
@@ -221,16 +220,9 @@ export default class AuthModule extends VuexModule {
     this.setLoading(true)
     this.setProjects([])
     this.setUsers([])
-    const res: AxiosResponse<ProjectItem[]> = await new DefaultApi($apiConfig)
-      .apiV2ProjectsGet()
-      .catch(async (err: AxiosError) => {
-        if (err.response && err.response.status === 401) {
-          await authStore.refresh()
-          return Axios.request(err.config)
-        } else {
-          throw err
-        }
-      })
+    const res: AxiosResponse<ProjectItem[]> = await new DefaultApi(
+      $apiConfig
+    ).apiV2ProjectsGet()
     const projects: Project[] = []
     await Promise.all(
       res.data.map(
@@ -267,16 +259,9 @@ export default class AuthModule extends VuexModule {
 
   @Action
   async fetchUsers(projectId: number): Promise<number[]> {
-    const res: AxiosResponse<UserData[]> = await new DefaultApi($apiConfig)
-      .apiV2ProjectsProjectIdOrKeyUsersGet(projectId.toFixed())
-      .catch(async (err: AxiosError) => {
-        if (err.response && err.response.status === 401) {
-          await authStore.refresh()
-          return Axios.request(err.config)
-        } else {
-          throw err
-        }
-      })
+    const res: AxiosResponse<UserData[]> = await new DefaultApi(
+      $apiConfig
+    ).apiV2ProjectsProjectIdOrKeyUsersGet(projectId.toFixed())
     const users: number[] = []
     await Promise.all(
       res.data.map(
