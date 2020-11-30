@@ -9,7 +9,12 @@ export default async function onRejected(
     switch (status) {
       case 401: {
         await authStore.refresh()
-        return Axios.request(err.config)
+        const config = err.config
+        if (config.headers.Authorization) {
+          config.headers.Authorization = `Bearer ${authStore.getAccessToken}`
+        }
+        console.log({ config })
+        return Axios.request(config)
       }
       case 500:
         alert('サーバー側で異常が発生しました')

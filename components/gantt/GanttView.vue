@@ -1,8 +1,8 @@
 <template>
   <div class="gantt-view">
-    <div class="wrapper">
-      <div class="title">Gantt View</div>
-      <client-only>
+    <client-only>
+      <div class="wrapper">
+        <div class="title">Gantt View</div>
         <GanttPeriodSetter class="head" />
         <div v-if="tasks.length > 99" class="warning">
           !!取得可能件数の上限に達しています。絞り込み条件を追加してください。
@@ -22,8 +22,8 @@
             class="table"
           />
         </template>
-      </client-only>
-    </div>
+      </div>
+    </client-only>
   </div>
 </template>
 
