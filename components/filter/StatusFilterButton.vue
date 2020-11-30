@@ -1,7 +1,7 @@
 <template>
   <div class="status-filter-button">
-    <client-only>
-      <ControllerBox title="Status" :wrappable="true">
+    <ControllerBox title="Status" :wrappable="true">
+      <client-only>
         <RoundButton
           text="すべて"
           :checked="statusFilter === 'all'"
@@ -16,14 +16,15 @@
           class="item"
           @click="onClickFetchedItem(status)"
         />
+
         <RoundButton
           text="完了以外"
           :checked="statusFilter === 'without-complete'"
           class="item"
           @click="onClickStaticItem('without-complete')"
         />
-      </ControllerBox>
-    </client-only>
+      </client-only>
+    </ControllerBox>
   </div>
 </template>
 

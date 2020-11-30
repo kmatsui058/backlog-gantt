@@ -5,9 +5,11 @@
     @click="onClick"
   >
     <ControllerBox title="MEMBER" help="ガントを表示するユーザーを選択します">
-      <div v-if="projectLoading" class="loading">wait a moment...</div>
-      <IconSelector v-else-if="icons.length" :icons="icons" />
-      <div v-else class="no-member">select member...</div>
+      <client-only>
+        <div v-if="projectLoading" class="loading">wait a moment...</div>
+        <IconSelector v-else-if="icons.length" :icons="icons" />
+        <div v-else class="no-member">select member...</div>
+      </client-only>
     </ControllerBox>
   </div>
 </template>
