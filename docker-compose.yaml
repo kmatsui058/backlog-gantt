@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  stub:
+    image: danielgtaylor/apisprout:latest
+    container_name: "stub"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./openapi.yaml:/openapi.yaml
+    entrypoint: /usr/local/bin/apisprout /openapi.yaml --watch
