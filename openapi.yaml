@@ -269,7 +269,7 @@ components:
     ProjectItem:
       description: プロジェクト一覧
       example:
-      -   archived: false
+          archived: false
           chartEnabled: false
           id: 1
           name: test
