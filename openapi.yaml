@@ -10,7 +10,7 @@ security:
 
 paths:
   /OAuth2AccessRequest.action :
-    $ref: './openapi/paths/OAuth2AccessRequest.action.yaml'
+    $ref: './openapi/paths/OAuth2AccessRequest.action.yaml#/%2Fpath'
 
   /api/v2/oauth2/token:
     post:
@@ -72,7 +72,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref : '#/components/schemas/ProjectItem'
+                  $ref : './openapi/components/schemas/ProjectItem.yaml#/ProjectItem'
 
   /api/v2/projects/{projectIdOrKey}/users:
     get:
@@ -235,10 +235,6 @@ paths:
 
 components:
   schemas:
-    ProjectItem:
-      $ref: './openapi/components/schemas/ProjectItem.yaml'
-
-
     Oauth2TokenCodeRequest:
       type: object
       properties:

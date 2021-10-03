@@ -1,32 +1,33 @@
-get:
-  summary: 認可リクエスト
-  parameters:
-    - in: query
-      name: response_type
-      required: true
-      schema:
-        type: string
-        example: "code"
-        enum:
-          - "code"
-    - in: query
-      name: client_id
-      required: true
-      schema:
-        type: string
-        example: "fvdfbsfgbsdf"
-    - in: query
-      name: redirect_uri
-      required: false
-      schema:
-        type: string
-        example: "https://backlog-gantt-develop.netlify.app/"
-    - in: query
-      name: state
-      required: false
-      schema:
-        type: string
-        example: "code"
-  responses:
-    "200":
-      description: 成功
+/path:
+  get:
+    summary: 認可リクエスト
+    parameters:
+      - in: query
+        name: response_type
+        required: true
+        schema:
+          type: string
+          example: "code"
+          enum:
+            - "code"
+      - in: query
+        name: client_id
+        required: true
+        schema:
+          type: string
+          example: "fvdfbsfgbsdf"
+      - in: query
+        name: redirect_uri
+        required: false
+        schema:
+          type: string
+          example: "https://backlog-gantt-develop.netlify.app/"
+      - in: query
+        name: state
+        required: false
+        schema:
+          type: string
+          example: "code"
+    responses:
+      "200":
+        description: 成功
