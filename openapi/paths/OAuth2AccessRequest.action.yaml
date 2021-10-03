@@ -1,33 +1,39 @@
-/path:
-  get:
-    summary: 認可リクエスト
-    parameters:
-      - in: query
-        name: response_type
-        required: true
-        schema:
-          type: string
-          example: "code"
-          enum:
-            - "code"
-      - in: query
-        name: client_id
-        required: true
-        schema:
-          type: string
-          example: "fvdfbsfgbsdf"
-      - in: query
-        name: redirect_uri
-        required: false
-        schema:
-          type: string
-          example: "https://backlog-gantt-develop.netlify.app/"
-      - in: query
-        name: state
-        required: false
-        schema:
-          type: string
-          example: "code"
-    responses:
-      "200":
-        description: 成功
+openapi: 3.0.2
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: backlog api
+paths:
+  /path:
+    get:
+      summary: 認可リクエスト
+      parameters:
+        - in: query
+          name: response_type
+          required: true
+          schema:
+            type: string
+            example: "code"
+            enum:
+              - "code"
+        - in: query
+          name: client_id
+          required: true
+          schema:
+            type: string
+            example: "fvdfbsfgbsdf"
+        - in: query
+          name: redirect_uri
+          required: false
+          schema:
+            type: string
+            example: "https://backlog-gantt-develop.netlify.app/"
+        - in: query
+          name: state
+          required: false
+          schema:
+            type: string
+            example: "code"
+      responses:
+        "200":
+          description: 成功
